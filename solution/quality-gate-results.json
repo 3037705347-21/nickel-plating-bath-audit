@@ -1,0 +1,57 @@
+{
+  "baseline": {
+    "reward": 0,
+    "evidence": "solution/evidence/baseline.log"
+  },
+  "oracle": {
+    "reward": 1,
+    "evidence": "solution/evidence/oracle.log"
+  },
+  "partials": [
+    {
+      "challenge_id": "C1",
+      "reward": 0.15,
+      "evidence": "solution/evidence/partial-c1.log"
+    },
+    {
+      "challenge_id": "C2",
+      "reward": 0.14,
+      "evidence": "solution/evidence/partial-c2.log"
+    },
+    {
+      "challenge_id": "C3",
+      "reward": 0.22,
+      "evidence": "solution/evidence/partial-c3.log"
+    },
+    {
+      "challenge_id": "C4",
+      "reward": 0.18,
+      "evidence": "solution/evidence/partial-c4.log"
+    },
+    {
+      "challenge_id": "C5",
+      "reward": 0.21,
+      "evidence": "solution/evidence/partial-c5.log"
+    }
+  ],
+  "bypasses": [
+    {
+      "id": "B1",
+      "description": "忽略输入并输出空JSON对象",
+      "reward": 0.9,
+      "evidence": "solution/evidence/bypass-empty.log"
+    },
+    {
+      "id": "B2",
+      "description": "不管输入都回放随包模拟记录的硬编码结果",
+      "reward": 0.9,
+      "evidence": "solution/evidence/bypass-hardcoded.log"
+    },
+    {
+      "id": "B3",
+      "description": "正常退出但写出截断的JSON文本",
+      "reward": 0.9,
+      "evidence": "solution/evidence/bypass-malformed.log"
+    }
+  ]
+}

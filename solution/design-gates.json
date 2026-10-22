@@ -1,0 +1,398 @@
+{
+  "name": "nickel-plating-bath-audit",
+  "category": "D.7 化学与材料 (Chemistry)",
+  "scene": "装饰性镍电镀线检修后，结合稀释滴定、铜污染校正、下一班电量计划和带出损失生成补加批单",
+  "core_task": "读取单批槽液与班次计划CSV，完成EDTA、甘露醇-碱和硝酸银滴定换算及铜干扰扣除，反算下一班开始前浓度，再用两种六水镍盐联立配平镍和氯离子缺口并输出结构化批单",
+  "data_provenance": {
+    "kind": "generated",
+    "source": "按固定槽容、当前浓度、班次电量、电流效率和带出液量生成模拟记录，滴定体积加入固定种子的两位小数扰动；生成规则保存在solution/generate_data.py，数据明确标注为模拟记录",
+    "seed": 20261022
+  },
+  "answer_verification": "测试中独立按净滴定体积、稀释倍数、EDTA铜干扰、法拉第沉积、带出液物料衡算和双盐联立方程逐项复算；再核对ASCII JSON字段、补加总质量以及从补入纯品反算的班前预测浓度",
+  "environment": {
+    "base_image": "python:3.12.8-slim-bookworm@sha256:2199a62885a12290dc9c5be3ca0681d367576ab7bf037da120e564723292a2f0",
+    "dependencies_locked": true,
+    "allow_internet": true,
+    "network_reason": "业务程序只用Python标准库；测试依赖由test.sh从带哈希的清单临时安装；镜像内固定版Codex需要通过本地代理连接模型，因此构建和运行阶段保留联网开关",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "R1",
+      "statement": "按净滴定体积、稀释倍数和一一对应计量关系计算硼酸与氯离子浓度；镍结果还要扣除EDTA络合的一比一铜干扰",
+      "observable": "三个浓度函数的结果、镍的铜校正与稀释换算、零净滴定返回零，以及非法样品体积或负铜含量抛出异常",
+      "expected_basis": "镍与EDTA、硼酸与甘露醇后NaOH、氯离子与硝酸银均为1:1物质的量关系；表观镍乘以稀释倍数后减去copper_g_l*58.6934/63.546",
+      "test_ids": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6",
+        "T7",
+        "T8",
+        "T9",
+        "T18"
+      ]
+    },
+    {
+      "id": "R2",
+      "statement": "在班前目标浓度下，用六水硫酸镍与六水氯化镍同时补齐镍和氯离子，并按商业原料有效含量折算补加质量",
+      "observable": "两种镍盐和硼酸的补加千克数、总补加量、班前预测浓度，以及无法由这两种镍盐满足氯缺口时的异常",
+      "expected_basis": "设两种纯镍盐摩尔数为a和b，则a+b为镍缺口摩尔数且2b为氯缺口摩尔数；纯品质量除以有效含量得到商品质量",
+      "test_ids": [
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T23",
+        "T18"
+      ]
+    },
+    {
+      "id": "R3",
+      "statement": "命令行按列名读取单行CSV，校验必填字段、有限数、正值、效率上限和带出体积，成功时原子写出固定结构JSON，错误时不创建或覆盖输出",
+      "observable": "标准记录得到完整批单、列顺序调整仍可读取、非法记录返回非零且已有输出内容不变",
+      "expected_basis": "解析依赖列名集合；所有字段先完成数值和范围检查，再一次性写入结果",
+      "test_ids": [
+        "T18",
+        "T19",
+        "T20"
+      ]
+    },
+    {
+      "id": "R4",
+      "statement": "按计划安时数和阴极电流效率计算镍沉积量，并用带出液量与补水恢复槽容这一关系反算班前目标及带出损失",
+      "observable": "forecast的镍沉积克数、三种组分的带出损失克数和班前目标浓度，以及非法带出体积或效率时的异常",
+      "expected_basis": "镍沉积量按m=Ah*3600*eff/(2F)*MNi计算；对每种组分满足C_start*(V-dragout)=C_end*V，镍右侧再加沉积量",
+      "test_ids": [
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T21",
+        "T22",
+        "T18"
+      ]
+    },
+    {
+      "id": "R5",
+      "statement": "把理论补加质量按三种原料各自的包装规格向上取整为整袋，并用整袋商品的实际有效量回算补加后浓度",
+      "observable": "三种原料的整数袋数、整袋商品千克数、总质量和按整袋质量计算的预测浓度，以及非正包装规格时的异常",
+      "expected_basis": "每种原料的实际质量等于ceil(理论质量/包装规格)*包装规格；纯品质量再乘以有效含量，预测浓度按实际纯品摩尔数除以槽容",
+      "test_ids": [
+        "T24",
+        "T25",
+        "T26",
+        "T27",
+        "T18"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "T1",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "EDTA滴定扣除空白并应用稀释后得到正确的表观镍"
+    },
+    {
+      "id": "T2",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "镍的摩尔质量、样品体积、稀释倍数和摩尔浓度换算一致"
+    },
+    {
+      "id": "T3",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "滴定体积等于空白体积且无铜时镍浓度为零"
+    },
+    {
+      "id": "T4",
+      "kind": "error",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "非正样品体积被拒绝"
+    },
+    {
+      "id": "T5",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "铜干扰按镍与铜摩尔质量比从表观镍中扣除"
+    },
+    {
+      "id": "T6",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "镍结果按样品稀释倍数换算到原槽液"
+    },
+    {
+      "id": "T7",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "甘露醇-碱滴定扣除空白并应用稀释后得到正确硼酸浓度"
+    },
+    {
+      "id": "T8",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "硼酸与NaOH按1:1计量而不是1:2"
+    },
+    {
+      "id": "T9",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "空白滴定抵消全部滴定体积时硼酸浓度为零"
+    },
+    {
+      "id": "T10",
+      "kind": "combination",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "镍和氯同时有缺口时正确拆分为两种六水镍盐"
+    },
+    {
+      "id": "T11",
+      "kind": "normal",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "两种商业镍盐分别按有效含量折算补加质量"
+    },
+    {
+      "id": "T12",
+      "kind": "normal",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "硼酸补加量按班前目标缺口和有效含量计算"
+    },
+    {
+      "id": "T13",
+      "kind": "error",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "氯缺口超过镍缺口两倍时拒绝生成配方"
+    },
+    {
+      "id": "T23",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "氯缺口恰好等于两倍镍缺口时接受配方且硫酸镍补加量为零"
+    },
+    {
+      "id": "T14",
+      "kind": "normal",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "计划安时数和电流效率经法拉第定律得到正确镍沉积量"
+    },
+    {
+      "id": "T15",
+      "kind": "combination",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "带出液量和槽容共同决定三种组分的班前目标浓度"
+    },
+    {
+      "id": "T16",
+      "kind": "normal",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "带出损失按班前浓度而不是班末目标计算"
+    },
+    {
+      "id": "T17",
+      "kind": "error",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "带出液量达到或超过槽容时拒绝预测"
+    },
+    {
+      "id": "T21",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "计划电量和带出液量均为零时班前目标保持不变且沉积量为零"
+    },
+    {
+      "id": "T22",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "阴极效率为零时仍可计算且镍沉积量为零"
+    },
+    {
+      "id": "T18",
+      "kind": "combination",
+      "requirement_ids": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5"
+      ],
+      "expected": "随包模拟记录得到当前浓度、班前目标、带出损失、补加量、总质量和预测浓度均正确的批单"
+    },
+    {
+      "id": "T19",
+      "kind": "normal",
+      "requirement_ids": [
+        "R3"
+      ],
+      "expected": "调换CSV列顺序后仍按列名读取并得到相同结果"
+    },
+    {
+      "id": "T20",
+      "kind": "error",
+      "requirement_ids": [
+        "R3"
+      ],
+      "expected": "非法滴定记录返回非零状态且不覆盖已有输出"
+    },
+    {
+      "id": "T24",
+      "kind": "normal",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "三种理论补加质量分别向上取整到各自包装规格的整数倍"
+    },
+    {
+      "id": "T25",
+      "kind": "combination",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "预测浓度使用整袋商品质量和有效含量计算，保留整袋超量"
+    },
+    {
+      "id": "T26",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "理论缺口为零时袋数、整袋质量和总补加量均为零"
+    },
+    {
+      "id": "T27",
+      "kind": "error",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "非正包装规格被拒绝"
+    }
+  ],
+  "challenges": [
+    {
+      "id": "C1",
+      "description": "镍结果要同时处理EDTA空白、样品稀释和铜的一比一络合干扰，不能把滴定读数直接当成镍浓度",
+      "failure_mode": "忽略空白或铜校正，导致镍结果带固定正偏差并传导到整张补加单",
+      "fix_action": "先求稀释后的表观镍，再按镍铜摩尔质量比扣除铜，并在入口校验样品体积、稀释倍数和铜含量",
+      "requirement_ids": [
+        "R1"
+      ],
+      "test_ids": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ]
+    },
+    {
+      "id": "C2",
+      "description": "硼酸加入甘露醇后释放一个质子，每摩尔硼酸只消耗一摩尔NaOH，空白和稀释都要处理",
+      "failure_mode": "沿用普通二元酸思路把NaOH计量乘二，使硼酸结果系统性翻倍",
+      "fix_action": "对净滴定体积使用一比一计量并乘稀释倍数，单独实现硼酸分析入口",
+      "requirement_ids": [
+        "R1"
+      ],
+      "test_ids": [
+        "T7",
+        "T8",
+        "T9"
+      ]
+    },
+    {
+      "id": "C3",
+      "description": "补加配方要同时满足班前镍和氯目标，不能把全部镍缺口都交给硫酸镍而忽略氯化镍的氯贡献",
+      "failure_mode": "只补硫酸镍并漏掉氯化镍，导致预测氯浓度仍低于班前目标",
+      "fix_action": "联立两种镍盐的摩尔守恒，按氯缺口确定氯化镍摩尔数，再按剩余镍缺口确定硫酸镍并折算两种商品有效含量",
+      "requirement_ids": [
+        "R2"
+      ],
+      "test_ids": [
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T23"
+      ]
+    },
+    {
+      "id": "C4",
+      "description": "下一班的镍电解消耗和工件带出都会降低槽液浓度，需要从班末目标反算班前目标，不能直接按班末目标配料",
+      "failure_mode": "忽略法拉第沉积与带出液稀释，或把带出损失按班末目标估算，导致下班末浓度偏低",
+      "fix_action": "按电量、效率和半反应电子数计算镍沉积，再用C_start*(V-dragout)=C_end*V反算三种班前浓度并计算带出损失",
+      "requirement_ids": [
+        "R4"
+      ],
+      "test_ids": [
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T21",
+        "T22"
+      ]
+    },
+    {
+      "id": "C5",
+      "description": "仓库只发整袋原料，三种理论补加量必须分别向上取整，并据整袋实际有效量回算补加后浓度",
+      "failure_mode": "把精确配料质量直接当作发料质量，或四舍五入后仍用理论质量计算预测浓度",
+      "fix_action": "按每种包装规格分别向上取整并输出袋数，再以整袋质量乘有效含量和摩尔质量反算三种预测浓度",
+      "requirement_ids": [
+        "R5"
+      ],
+      "test_ids": [
+        "T24",
+        "T25",
+        "T26",
+        "T27"
+      ]
+    }
+  ]
+}

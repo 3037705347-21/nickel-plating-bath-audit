@@ -1,0 +1,97 @@
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-empty.w3mTFD:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-empty.S2Mhdu:/logs harbor-nickel-bath-quality:27734 bash /tests/test.sh
+Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
+  WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)'))': /packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl
+  Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
+  Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
+  Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
+  Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 64.8 kB/s eta 0:00:00
+Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
+  Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
+Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
+  Downloading pytest_json_ctrf-0.3.5-py3-none-any.whl (6.8 kB)
+Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, pytest-json-ctrf
+  WARNING: The script pygmentize is installed in '/home/worker/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
+........................FFF                                              [100%]
+=================================== FAILURES ===================================
+____________________________ test_e2e_sample_report ____________________________
+
+    def test_e2e_sample_report():
+        """Produce the complete report for the bundled simulated record."""
+        row = _sample_record()
+        expected = _reference_report(row)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "batch.json"
+            completed = _run_cli(DATA / "lab_record.csv", output)
+            assert completed.returncode == 0, completed.stderr
+            actual = json.loads(output.read_text(encoding="utf-8"))
+>       assert actual["batch_id"] == expected["batch_id"]
+               ^^^^^^^^^^^^^^^^^^
+E       KeyError: 'batch_id'
+
+/tests/test_outputs.py:625: KeyError
+__________________________ test_e2e_reordered_columns __________________________
+
+    def test_e2e_reordered_columns():
+        """Read a valid record by column name instead of by position."""
+        row = _sample_record()
+        expected = _reference_report(row)
+        with tempfile.TemporaryDirectory() as directory:
+            directory_path = Path(directory)
+            record_path = directory_path / "reordered.csv"
+            output_path = directory_path / "batch.json"
+            fieldnames = list(reversed(list(row.keys())))
+            _write_record(record_path, fieldnames, row)
+            completed = _run_cli(record_path, output_path)
+            assert completed.returncode == 0, completed.stderr
+            actual = json.loads(output_path.read_text(encoding="utf-8"))
+>       assert actual["analysis_g_l"]["nickel"] == pytest.approx(
+               ^^^^^^^^^^^^^^^^^^^^^^
+            expected["analysis_g_l"]["nickel"], rel=1e-12
+        )
+E       KeyError: 'analysis_g_l'
+
+/tests/test_outputs.py:703: KeyError
+____________________ test_e2e_invalid_row_preserves_output _____________________
+
+    def test_e2e_invalid_row_preserves_output():
+        """Reject an impossible blank volume without touching an existing output."""
+        row = _sample_record()
+        row["edta_blank_ml"] = "9.00"
+        row["edta_titrant_ml"] = "1.00"
+        with tempfile.TemporaryDirectory() as directory:
+            directory_path = Path(directory)
+            record_path = directory_path / "invalid.csv"
+            output_path = directory_path / "batch.json"
+            _write_record(record_path, list(row.keys()), row)
+            output_path.write_text("existing result\n", encoding="utf-8")
+            completed = _run_cli(record_path, output_path)
+>           assert completed.returncode != 0
+E           AssertionError: assert 0 != 0
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpy41wf2tg/invalid.csv', '/tmp/tmpy41wf2tg/batch.json'], returncode=0, stdout='', stderr='').returncode
+
+/tests/test_outputs.py:739: AssertionError
+=============================== warnings summary ===============================
+../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-96_vwfkg'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-_yk8a8qd'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../tests/test_outputs.py::test_e2e_sample_report - KeyError: 'batch_id'
+FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - KeyError: 'anal...
+FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
+3 failed, 24 passed, 2 warnings in 0.34s
+reward=0.900000
+summary=tests=27 passed=24 failed=3

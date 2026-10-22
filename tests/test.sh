@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -u
+
+reward_file=/logs/verifier/reward.txt
+ctrf_file=/logs/verifier/ctrf.json
+mkdir -p /logs/verifier
+
+write_reward_zero() {
+  chmod 0644 "$reward_file" 2>/dev/null || true
+  echo "0" > "$reward_file"
+  chmod 0444 "$reward_file"
+}
+
+write_reward_zero
+
+trap 'write_reward_zero' EXIT
+trap 'write_reward_zero; exit 130' INT TERM HUP
+
+if ! python -m pip install --user --no-cache-dir --disable-pip-version-check \
+  --require-hashes --only-binary=:all: -r /tests/requirements.txt; then
+  write_reward_zero
+  exit 0
+fi
+
+cd /workspace
+timeout 240s python -m pytest --ctrf "$ctrf_file" /tests/test_outputs.py -q
+
+python3 - "$ctrf_file" "$reward_file" <<'PY'
+import json
+import os
+import sys
+
+ctrf_path, reward_path = sys.argv[1:]
+groups = {
+    "C1": (0.15, "test_c1_"),
+    "C2": (0.14, "test_c2_"),
+    "C3": (0.22, "test_c3_"),
+    "C4": (0.18, "test_c4_"),
+    "C5": (0.21, "test_c5_"),
+    "E2E": (0.10, "test_e2e_"),
+}
+try:
+    with open(ctrf_path, encoding="utf-8") as handle:
+        tests = json.load(handle)["results"]["tests"]
+except (OSError, KeyError, TypeError, json.JSONDecodeError):
+    tests = []
+
+statuses = {}
+for test in tests:
+    name = str(test.get("name", "")).split("::")[-1]
+    statuses[name] = test.get("status") == "passed"
+
+score = 0.0
+for weight, prefix in groups.values():
+    relevant = [passed for name, passed in statuses.items() if name.startswith(prefix)]
+    if relevant and all(relevant):
+        score += weight
+
+score = min(1.0, max(0.0, score))
+os.chmod(reward_path, 0o644)
+with open(reward_path, "w", encoding="utf-8") as handle:
+    handle.write(f"{score:.6f}\n")
+os.chmod(reward_path, 0o444)
+PY
+
+trap - EXIT INT TERM HUP
+exit 0

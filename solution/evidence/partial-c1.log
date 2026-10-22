@@ -1,0 +1,323 @@
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-c1.YD6f0X:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-partial-c1.Bq4FMM:/logs harbor-nickel-bath-quality:27734 bash /tests/test.sh
+Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
+  Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
+  Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
+  Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
+  Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 627.1 kB/s eta 0:00:00
+Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
+  Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
+Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
+  Downloading pytest_json_ctrf-0.3.5-py3-none-any.whl (6.8 kB)
+Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, pytest-json-ctrf
+  WARNING: The script pygmentize is installed in '/home/worker/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
+......FF.FFFFFFFFF..FF.FFF.                                              [100%]
+=================================== FAILURES ===================================
+________________________ test_c2_boric_blank_correction ________________________
+
+    def test_c2_boric_blank_correction():
+        """Subtract the boric-acid blank before applying its stoichiometry."""
+        expected = _reference_concentration(4.0, 18.42, 0.22, 0.1, BORIC_ACID_G_PER_MOL)
+        expected *= 2.0
+        actual = boric_acid_concentration_g_l(4.0, 18.42, 0.22, 0.1, 2.0)
+>       assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
+E       assert 112.53424000000003 == 56.26712000000001 ± 5.6e-11
+E         
+E         comparison failed
+E         Obtained: 112.53424000000003
+E         Expected: 56.26712000000001 ± 5.6e-11
+
+/tests/test_outputs.py:368: AssertionError
+____________________ test_c2_boric_one_to_one_stoichiometry ____________________
+
+    def test_c2_boric_one_to_one_stoichiometry():
+        """Consume one mole of NaOH per mole of boric acid."""
+        expected = _reference_concentration(5.0, 12.25, 0.25, 0.1, BORIC_ACID_G_PER_MOL)
+        actual = boric_acid_concentration_g_l(5.0, 12.25, 0.25, 0.1, 1.0)
+>       assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
+E       assert 29.679360000000003 == 14.839680000000001 ± 1.5e-11
+E         
+E         comparison failed
+E         Obtained: 29.679360000000003
+E         Expected: 14.839680000000001 ± 1.5e-11
+
+/tests/test_outputs.py:375: AssertionError
+_________________________ test_c3_coupled_nickel_salts _________________________
+
+    def test_c3_coupled_nickel_salts():
+        """Split simultaneous nickel and chloride deficits across two salts."""
+        arguments = (2000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
+        expected = _reference_makeup(*arguments)
+        actual = makeup_plan(*arguments)
+>       assert actual["addition_kg"]["nickel_chloride_hexahydrate"] > 0.0
+E       assert 0.0 > 0.0
+
+/tests/test_outputs.py:389: AssertionError
+______________________ test_c3_assay_applied_to_raw_mass _______________________
+
+    def test_c3_assay_applied_to_raw_mass():
+        """Convert pure hexahydrates to commercial mass through their assays."""
+        arguments = (1750.0, 64.0, 29.0, 22.0, 74.0, 34.0, 31.0, 0.982, 0.968, 0.991)
+        expected = _reference_makeup(*arguments)
+        actual = makeup_plan(*arguments)
+>       assert actual["addition_kg"]["nickel_sulfate_hexahydrate"] == pytest.approx(
+            expected["addition_kg"]["nickel_sulfate_hexahydrate"], rel=1e-12, abs=1e-12
+        )
+E       assert 79.80659785026536 == 20.35170668113598 ± 2.0e-11
+E         
+E         comparison failed
+E         Obtained: 79.80659785026536
+E         Expected: 20.35170668113598 ± 2.0e-11
+
+/tests/test_outputs.py:403: AssertionError
+_________________________ test_c3_boric_acid_addition __________________________
+
+    def test_c3_boric_acid_addition():
+        """Add boric acid from the target deficit and assay."""
+        arguments = (900.0, 61.0, 27.5, 23.0, 72.0, 36.0, 30.0, 0.99, 0.97, 0.992)
+        expected = _reference_makeup(*arguments)
+        actual = makeup_plan(*arguments)
+>       assert actual["addition_kg"]["boric_acid"] == pytest.approx(
+            expected["addition_kg"]["boric_acid"], rel=1e-12, abs=1e-12
+        )
+E       assert 7.65 == 7.711693548387097 ± 7.7e-12
+E         
+E         comparison failed
+E         Obtained: 7.65
+E         Expected: 7.711693548387097 ± 7.7e-12
+
+/tests/test_outputs.py:419: AssertionError
+________________ test_c3_rejects_chloride_without_enough_nickel ________________
+
+    def test_c3_rejects_chloride_without_enough_nickel():
+        """Reject a chloride demand that exceeds twice the nickel demand."""
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+/tests/test_outputs.py:435: Failed
+________________ test_c3_equal_demand_uses_only_nickel_chloride ________________
+
+    def test_c3_equal_demand_uses_only_nickel_chloride():
+        """Accept the exact boundary where chloride consumes the whole nickel deficit."""
+        actual = makeup_plan(
+            1000.0,
+            60.0,
+            30.0,
+            20.0,
+            65.86934,
+            30.0,
+            27.0906,
+            1.0,
+            1.0,
+            1.0,
+        )
+>       assert actual["addition_kg"]["nickel_sulfate_hexahydrate"] == pytest.approx(
+            0.0, abs=1e-12
+        )
+E       assert 26.28460799999997 == 0.0 ± 1.0e-12
+E         
+E         comparison failed
+E         Obtained: 26.28460799999997
+E         Expected: 0.0 ± 1.0e-12
+
+/tests/test_outputs.py:453: AssertionError
+__________________________ test_c4_faraday_deposition __________________________
+
+    def test_c4_faraday_deposition():
+        """Convert planned ampere-hours and cathode efficiency into nickel mass."""
+        arguments = (1200.0, 1800.0, 0.94, 15.0, 75.0, 35.0, 30.0)
+        expected = _reference_forecast(*arguments)
+        actual = shift_start_targets_g_l(*arguments)
+>       assert actual["nickel_deposited_g"] == pytest.approx(
+            expected["nickel_deposited_g"], rel=1e-12, abs=1e-12
+        )
+E       assert 0.0 == 1852.681802635847 ± 1.9e-09
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 1852.681802635847 ± 1.9e-09
+
+/tests/test_outputs.py:472: AssertionError
+_____________________ test_c4_dragout_raises_start_targets _____________________
+
+    def test_c4_dragout_raises_start_targets():
+        """Compensate for drag-out while preserving the end-of-shift targets."""
+        arguments = (800.0, 450.0, 0.88, 24.0, 68.0, 32.0, 27.0)
+        expected = _reference_forecast(*arguments)
+        actual = shift_start_targets_g_l(*arguments)
+>       assert actual["shift_start_target_g_l"]["nickel"] == pytest.approx(
+            expected["shift_start_target_g_l"]["nickel"], rel=1e-12, abs=1e-12
+        )
+E       assert 68.0 == 70.66186389090245 ± 7.1e-11
+E         
+E         comparison failed
+E         Obtained: 68.0
+E         Expected: 70.66186389090245 ± 7.1e-11
+
+/tests/test_outputs.py:482: AssertionError
+________________ test_c4_dragout_losses_use_start_concentration ________________
+
+    def test_c4_dragout_losses_use_start_concentration():
+        """Calculate drag-out mass from the pre-shift concentration."""
+        arguments = (650.0, 700.0, 0.91, 18.0, 72.0, 34.0, 29.0)
+        expected = _reference_forecast(*arguments)
+        actual = shift_start_targets_g_l(*arguments)
+>       assert actual["dragout_loss_g"]["nickel"] == pytest.approx(
+            expected["dragout_loss_g"]["nickel"], rel=1e-12, abs=1e-12
+        )
+E       assert 0.0 == 1352.7767019303635 ± 1.4e-09
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 1352.7767019303635 ± 1.4e-09
+
+/tests/test_outputs.py:498: AssertionError
+______________________ test_c4_rejects_full_tank_dragout _______________________
+
+    def test_c4_rejects_full_tank_dragout():
+        """Reject a drag-out volume that removes the whole tank."""
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+/tests/test_outputs.py:511: Failed
+________________ test_c5_rounds_each_material_up_to_whole_bags _________________
+
+    def test_c5_rounds_each_material_up_to_whole_bags():
+        """Round each theoretical addition upward to its own package size."""
+        arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
+        exact_plan = _reference_makeup(*arguments)
+        expected = _reference_package(
+            1000.0, 60.0, 30.0, 20.0, exact_plan, 0.985, 0.975, 0.995, 25.0, 10.0, 5.0
+        )
+        actual = package_plan(
+            1000.0, 60.0, 30.0, 20.0, exact_plan, 0.985, 0.975, 0.995, 25.0, 10.0, 5.0
+        )
+>       assert actual["bags"] == expected["bags"]
+E       AssertionError: assert {'boric_acid'...xahydrate': 0} == {'boric_acid'...xahydrate': 1}
+E         
+E         Differing items:
+E         {'nickel_chloride_hexahydrate': 0} != {'nickel_chloride_hexahydrate': 5}
+E         {'boric_acid': 0} != {'boric_acid': 2}
+E         {'nickel_sulfate_hexahydrate': 0} != {'nickel_sulfate_hexahydrate': 1}
+E         Use -v to get more diff
+
+/tests/test_outputs.py:545: AssertionError
+________________ test_c5_predicted_uses_packaged_material_mass _________________
+
+    def test_c5_predicted_uses_packaged_material_mass():
+        """Predict from overage created by full-bag packaging."""
+        arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
+        exact_plan = _reference_makeup(*arguments)
+        expected = _reference_package(
+            1000.0, 60.0, 30.0, 20.0, exact_plan, 0.985, 0.975, 0.995, 25.0, 10.0, 5.0
+        )
+        actual = package_plan(
+            1000.0, 60.0, 30.0, 20.0, exact_plan, 0.985, 0.975, 0.995, 25.0, 10.0, 5.0
+        )
+>       assert actual["predicted_g_l"]["nickel"] == pytest.approx(
+            expected["predicted_g_l"]["nickel"], rel=1e-12
+        )
+E       assert 70.0 == 77.53665791702389 ± 7.8e-11
+E         
+E         comparison failed
+E         Obtained: 70.0
+E         Expected: 77.53665791702389 ± 7.8e-11
+
+/tests/test_outputs.py:566: AssertionError
+_____________________ test_c5_rejects_nonpositive_bag_size _____________________
+
+    def test_c5_rejects_nonpositive_bag_size():
+        """Reject a non-positive package size."""
+        exact_plan = _reference_makeup(
+            1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995
+        )
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+/tests/test_outputs.py:600: Failed
+____________________________ test_e2e_sample_report ____________________________
+
+    def test_e2e_sample_report():
+        """Produce the complete report for the bundled simulated record."""
+        row = _sample_record()
+        expected = _reference_report(row)
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "batch.json"
+            completed = _run_cli(DATA / "lab_record.csv", output)
+            assert completed.returncode == 0, completed.stderr
+            actual = json.loads(output.read_text(encoding="utf-8"))
+        assert actual["batch_id"] == expected["batch_id"]
+        assert actual["tank_volume_l"] == pytest.approx(expected["tank_volume_l"])
+        assert actual["analysis_g_l"]["nickel"] == pytest.approx(
+            expected["analysis_g_l"]["nickel"], rel=1e-12
+        )
+>       assert actual["analysis_g_l"]["boric_acid"] == pytest.approx(
+            expected["analysis_g_l"]["boric_acid"], rel=1e-12
+        )
+E       assert 56.019792 == 28.009896 ± 2.8e-11
+E         
+E         comparison failed
+E         Obtained: 56.019792
+E         Expected: 28.009896 ± 2.8e-11
+
+/tests/test_outputs.py:630: AssertionError
+__________________________ test_e2e_reordered_columns __________________________
+
+    def test_e2e_reordered_columns():
+        """Read a valid record by column name instead of by position."""
+        row = _sample_record()
+        expected = _reference_report(row)
+        with tempfile.TemporaryDirectory() as directory:
+            directory_path = Path(directory)
+            record_path = directory_path / "reordered.csv"
+            output_path = directory_path / "batch.json"
+            fieldnames = list(reversed(list(row.keys())))
+            _write_record(record_path, fieldnames, row)
+            completed = _run_cli(record_path, output_path)
+>           assert completed.returncode == 0, completed.stderr
+E           AssertionError: error: unexpected columns
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpdmy6tocb/reordered.csv', '/tmp/tmpdmy6tocb/batch.json'], returncode=1, stdout='', stderr='error: unexpected columns\n').returncode
+
+/tests/test_outputs.py:701: AssertionError
+=============================== warnings summary ===============================
+../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-bga7ohjv'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-_aj4jlsz'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../tests/test_outputs.py::test_c2_boric_blank_correction - assert 112....
+FAILED ../tests/test_outputs.py::test_c2_boric_one_to_one_stoichiometry - ass...
+FAILED ../tests/test_outputs.py::test_c3_coupled_nickel_salts - assert 0.0 > 0.0
+FAILED ../tests/test_outputs.py::test_c3_assay_applied_to_raw_mass - assert 7...
+FAILED ../tests/test_outputs.py::test_c3_boric_acid_addition - assert 7.65 ==...
+FAILED ../tests/test_outputs.py::test_c3_rejects_chloride_without_enough_nickel
+FAILED ../tests/test_outputs.py::test_c3_equal_demand_uses_only_nickel_chloride
+FAILED ../tests/test_outputs.py::test_c4_faraday_deposition - assert 0.0 == 1...
+FAILED ../tests/test_outputs.py::test_c4_dragout_raises_start_targets - asser...
+FAILED ../tests/test_outputs.py::test_c4_dragout_losses_use_start_concentration
+FAILED ../tests/test_outputs.py::test_c4_rejects_full_tank_dragout - Failed: ...
+FAILED ../tests/test_outputs.py::test_c5_rounds_each_material_up_to_whole_bags
+FAILED ../tests/test_outputs.py::test_c5_predicted_uses_packaged_material_mass
+FAILED ../tests/test_outputs.py::test_c5_rejects_nonpositive_bag_size - Faile...
+FAILED ../tests/test_outputs.py::test_e2e_sample_report - assert 56.019792 ==...
+FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - AssertionError:...
+16 failed, 11 passed, 2 warnings in 0.45s
+reward=0.150000
+summary=tests=27 passed=11 failed=16
