@@ -1,8 +1,8 @@
-$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_e2e_reordered_columns'
+$ docker exec c4ce193a64654f1c09dd62d8d0d11d0733245ef1a48b002954b328fdc6d3bbf9 python -c 'direct test function test_e2e_reordered_columns'
 NI-E2E-02 FAILED test_e2e_reordered_columns
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 722, in test_e2e_reordered_columns
+  File "/tests/test_outputs.py", line 861, in test_e2e_reordered_columns
     assert completed.returncode == 0, completed.stderr
            ^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: error: unexpected columns

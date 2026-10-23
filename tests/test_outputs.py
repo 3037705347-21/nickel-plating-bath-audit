@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
@@ -21,6 +22,7 @@ from bath_audit.makeup import makeup_plan
 from bath_audit.nickel import nickel_concentration_g_l
 from bath_audit.packaging import package_plan
 from bath_audit.release_state import audit, surface
+import bath_audit.release_state as release_state_module
 
 
 DATA = Path("/workspace/data")
@@ -632,6 +634,143 @@ def test_e2e_state_transition_matrix():
     assert summary["counts"] == {"released": 0, "rejected": 1}
     assert summary["event_count"] == 3
     assert surface()["counts"] == {"released": 0, "rejected": 0}
+
+
+def test_e2e_cross_process_release_state():
+    """case_id=NI-F7-03; case_id=NI-F7-04; case_id=NI-F7-05; case_id=NI-F7-07; case_id=NI-F7-08; case_id=NI-F7-09; case_id=NI-F7-10. 题面原文：「同一批号在三个独立进程里依次写入拒收、放行、再次拒收后，读回的状态顺序仍应完整」。"""
+    process_code = (
+        "import json,sys\n"
+        "from bath_audit.release_state import audit, surface\n"
+        "events=json.loads(sys.argv[1])\n"
+        "mode=sys.argv[2]\n"
+        "state=sys.argv[3]\n"
+        "result=audit(events, state_path=state) if mode == 'audit' "
+        "else surface(events, state_path=state)\n"
+        "print(json.dumps(result, ensure_ascii=False))\n"
+    )
+    with tempfile.TemporaryDirectory() as directory:
+        state_path = Path(directory) / "release-state.json"
+        expected = [
+            {"event_id": "run-01", "batch_id": "B-2026-01", "status": "rejected"},
+            {"event_id": "run-02", "batch_id": "B-2026-01", "status": "released"},
+            {"event_id": "run-03", "batch_id": "B-2026-01", "status": "rejected"},
+        ]
+        first = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                process_code,
+                json.dumps([expected[0]]),
+                "audit",
+                str(state_path),
+            ],
+            cwd="/workspace",
+            capture_output=True,
+            text=True,
+        )
+        assert first.returncode == 0, first.stderr
+        assert json.loads(first.stdout)["transitions"] == {
+            "B-2026-01": ["rejected"]
+        }
+        second = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                process_code,
+                json.dumps([expected[1], expected[2], expected[1]]),
+                "audit",
+                str(state_path),
+            ],
+            cwd="/workspace",
+            capture_output=True,
+            text=True,
+        )
+        assert second.returncode == 0, second.stderr
+        assert json.loads(second.stdout)["transitions"] == {
+            "B-2026-01": [
+                "rejected",
+                "released",
+                "rejected"
+            ]
+        }
+        third = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                process_code,
+                "[]",
+                "surface",
+                str(state_path),
+            ],
+            cwd="/workspace",
+            capture_output=True,
+            text=True,
+        )
+        assert third.returncode == 0, third.stderr
+        summary = json.loads(third.stdout)
+        assert summary["counts"] == {"released": 0, "rejected": 1}
+        assert summary["event_count"] == 3
+        stored = json.loads(state_path.read_text(encoding="utf-8"))
+        assert stored["version"] == 1
+        assert [event["event_id"] for event in stored["events"]] == [
+            "run-01",
+            "run-02",
+            "run-03"
+        ]
+        before_failure = state_path.read_bytes()
+        invalid = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                process_code,
+                json.dumps(
+                    [
+                        {
+                            "event_id": "run-04",
+                            "batch_id": "B-2026-01",
+                            "status": "hold",
+                        }
+                    ]
+                ),
+                "audit",
+                str(state_path),
+            ],
+            cwd="/workspace",
+            capture_output=True,
+            text=True,
+        )
+        assert invalid.returncode != 0
+        assert state_path.read_bytes() == before_failure
+
+
+def test_e2e_state_write_failure_preserves_journal():
+    """case_id=NI-F7-06. 题面原文：「失败不得改动原文件」：原子替换失败后保留既有状态日志。"""
+    with tempfile.TemporaryDirectory() as directory:
+        state_path = Path(directory) / "release-state.json"
+        audit(
+            [{"event_id": "run-01", "batch_id": "B-2026-01", "status": "rejected"}],
+            state_path=state_path,
+        )
+        before_failure = state_path.read_bytes()
+
+        def fail_replace(source, destination):
+            """Simulate a storage failure during atomic replacement."""
+            raise OSError("simulated replace failure")
+
+        with patch.object(release_state_module.os, "replace", fail_replace):
+            with pytest.raises(OSError):
+                audit(
+                    [
+                        {
+                            "event_id": "run-02",
+                            "batch_id": "B-2026-01",
+                            "status": "released",
+                        }
+                    ],
+                    state_path=state_path,
+                )
+        assert state_path.read_bytes() == before_failure
+        assert list(Path(directory).glob(".release-state.json.*")) == []
 
 
 def test_e2e_sample_report():

@@ -1,5 +1,6 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-empty.CvQNUX:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-empty.UerHMT:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-empty.bt16JK:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-empty.uMJzMe:/logs harbor-nickel-bath-quality:89064 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
+  WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)'))': /packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
   Downloading packaging-26.3-py3-none-any.whl (129 kB)
@@ -18,7 +19,7 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-.........................FFF                                             [100%]
+...........................FFF                                           [100%]
 =================================== FAILURES ===================================
 ____________________________ test_e2e_sample_report ____________________________
 
@@ -35,7 +36,7 @@ ____________________________ test_e2e_sample_report ____________________________
                ^^^^^^^^^^^^^^^^^^
 E       KeyError: 'batch_id'
 
-/tests/test_outputs.py:646: KeyError
+/tests/test_outputs.py:785: KeyError
 __________________________ test_e2e_reordered_columns __________________________
 
     def test_e2e_reordered_columns():
@@ -57,7 +58,7 @@ __________________________ test_e2e_reordered_columns __________________________
         )
 E       KeyError: 'analysis_g_l'
 
-/tests/test_outputs.py:724: KeyError
+/tests/test_outputs.py:863: KeyError
 ____________________ test_e2e_invalid_row_preserves_output _____________________
 
     def test_e2e_invalid_row_preserves_output():
@@ -74,16 +75,16 @@ ____________________ test_e2e_invalid_row_preserves_output _____________________
             completed = _run_cli(record_path, output_path)
 >           assert completed.returncode != 0
 E           AssertionError: assert 0 != 0
-E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpoirxorg_/invalid.csv', '/tmp/tmpoirxorg_/batch.json'], returncode=0, stdout='', stderr='').returncode
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpsw5r8a0n/invalid.csv', '/tmp/tmpsw5r8a0n/batch.json'], returncode=0, stdout='', stderr='').returncode
 
-/tests/test_outputs.py:760: AssertionError
+/tests/test_outputs.py:899: AssertionError
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-zziybccv'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-e8wn43sb'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-p9xy8wwv'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-75_7x4zg'
     config.cache.set("cache/lastfailed", self.lastfailed)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -91,6 +92,6 @@ E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 
 FAILED ../tests/test_outputs.py::test_e2e_sample_report - KeyError: 'batch_id'
 FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - KeyError: 'anal...
 FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
-3 failed, 25 passed, 2 warnings in 0.35s
+3 failed, 27 passed, 2 warnings in 0.93s
 reward=0.900000
-summary=tests=28 passed=25 failed=3
+summary=tests=30 passed=27 failed=3

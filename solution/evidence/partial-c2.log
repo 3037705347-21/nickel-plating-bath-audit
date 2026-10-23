@@ -1,4 +1,4 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-c2.JSrKRx:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-partial-c2.SLJoQr:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-c2.lSorMt:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-partial-c2.OanJSg:/logs harbor-nickel-bath-quality:89064 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
@@ -7,7 +7,7 @@ Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
 Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 224.9 kB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 219.5 kB/s eta 0:00:00
 Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
   Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
 Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
@@ -18,7 +18,7 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-FFFFF....FFFFFFFFF..FF.FFFFF                                             [100%]
+FFFFF....FFFFFFFFF..FF.FFFFFFF                                           [100%]
 =================================== FAILURES ===================================
 ________________________ test_c1_edta_blank_correction _________________________
 
@@ -33,7 +33,7 @@ E         comparison failed
 E         Obtained: 27.787001357913947
 E         Expected: 26.31966635791395 ± 2.6e-11
 
-/tests/test_outputs.py:327: AssertionError
+/tests/test_outputs.py:329: AssertionError
 _________________ test_c1_nickel_stoichiometry_and_molar_mass __________________
 
     def test_c1_nickel_stoichiometry_and_molar_mass():
@@ -47,7 +47,7 @@ E         comparison failed
 E         Obtained: 94.34911633633116
 E         Expected: 92.94047473633114 ± 9.3e-11
 
-/tests/test_outputs.py:334: AssertionError
+/tests/test_outputs.py:336: AssertionError
 ____________________ test_c1_zero_net_titrant_returns_zero _____________________
 
     def test_c1_zero_net_titrant_returns_zero():
@@ -60,7 +60,7 @@ E         comparison failed
 E         Obtained: 1.9662288999999997
 E         Expected: 0.0 ± 1.0e-12
 
-/tests/test_outputs.py:340: AssertionError
+/tests/test_outputs.py:342: AssertionError
 ____________________ test_c1_invalid_sample_volume_rejected ____________________
 
     def test_c1_invalid_sample_volume_rejected():
@@ -68,7 +68,7 @@ ____________________ test_c1_invalid_sample_volume_rejected ____________________
         with pytest.raises(ValueError):
 >           nickel_concentration_g_l(0.0, 14.0, 0.5, 0.1, 1.0, 0.0)
 
-/tests/test_outputs.py:346: 
+/tests/test_outputs.py:348: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 sample_ml = 0.0, titrant_ml = 14.0, blank_ml = 0.5, molarity = 0.1
@@ -109,7 +109,7 @@ E         comparison failed
 E         Obtained: 62.71776239478488
 E         Expected: 61.77866799478487 ± 6.2e-11
 
-/tests/test_outputs.py:354: AssertionError
+/tests/test_outputs.py:356: AssertionError
 _________________________ test_c3_coupled_nickel_salts _________________________
 
     def test_c3_coupled_nickel_salts():
@@ -120,7 +120,7 @@ _________________________ test_c3_coupled_nickel_salts _________________________
 >       assert actual["addition_kg"]["nickel_chloride_hexahydrate"] > 0.0
 E       assert 0.0 > 0.0
 
-/tests/test_outputs.py:390: AssertionError
+/tests/test_outputs.py:392: AssertionError
 ______________________ test_c3_assay_applied_to_raw_mass _______________________
 
     def test_c3_assay_applied_to_raw_mass():
@@ -137,7 +137,7 @@ E         comparison failed
 E         Obtained: 79.80659785026536
 E         Expected: 20.35170668113598 ± 2.0e-11
 
-/tests/test_outputs.py:404: AssertionError
+/tests/test_outputs.py:406: AssertionError
 _________________________ test_c3_boric_acid_addition __________________________
 
     def test_c3_boric_acid_addition():
@@ -154,7 +154,7 @@ E         comparison failed
 E         Obtained: 7.65
 E         Expected: 7.711693548387097 ± 7.7e-12
 
-/tests/test_outputs.py:420: AssertionError
+/tests/test_outputs.py:422: AssertionError
 ________________ test_c3_rejects_chloride_without_enough_nickel ________________
 
     def test_c3_rejects_chloride_without_enough_nickel():
@@ -163,7 +163,7 @@ ________________ test_c3_rejects_chloride_without_enough_nickel ________________
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:436: Failed
+/tests/test_outputs.py:438: Failed
 ________________ test_c3_equal_demand_uses_only_nickel_chloride ________________
 
     def test_c3_equal_demand_uses_only_nickel_chloride():
@@ -189,7 +189,7 @@ E         comparison failed
 E         Obtained: 26.28460799999997
 E         Expected: 0.0 ± 1.0e-12
 
-/tests/test_outputs.py:454: AssertionError
+/tests/test_outputs.py:456: AssertionError
 __________________________ test_c4_faraday_deposition __________________________
 
     def test_c4_faraday_deposition():
@@ -206,7 +206,7 @@ E         comparison failed
 E         Obtained: 0.0
 E         Expected: 1852.681802635847 ± 1.9e-09
 
-/tests/test_outputs.py:473: AssertionError
+/tests/test_outputs.py:475: AssertionError
 _____________________ test_c4_dragout_raises_start_targets _____________________
 
     def test_c4_dragout_raises_start_targets():
@@ -223,7 +223,7 @@ E         comparison failed
 E         Obtained: 68.0
 E         Expected: 70.66186389090245 ± 7.1e-11
 
-/tests/test_outputs.py:483: AssertionError
+/tests/test_outputs.py:485: AssertionError
 ________________ test_c4_dragout_losses_use_start_concentration ________________
 
     def test_c4_dragout_losses_use_start_concentration():
@@ -240,7 +240,7 @@ E         comparison failed
 E         Obtained: 0.0
 E         Expected: 1352.7767019303635 ± 1.4e-09
 
-/tests/test_outputs.py:499: AssertionError
+/tests/test_outputs.py:501: AssertionError
 ______________________ test_c4_rejects_full_tank_dragout _______________________
 
     def test_c4_rejects_full_tank_dragout():
@@ -249,7 +249,7 @@ ______________________ test_c4_rejects_full_tank_dragout _______________________
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:512: Failed
+/tests/test_outputs.py:514: Failed
 ________________ test_c5_rounds_each_material_up_to_whole_bags _________________
 
     def test_c5_rounds_each_material_up_to_whole_bags():
@@ -266,12 +266,12 @@ ________________ test_c5_rounds_each_material_up_to_whole_bags _________________
 E       AssertionError: assert {'boric_acid'...xahydrate': 0} == {'boric_acid'...xahydrate': 1}
 E         
 E         Differing items:
-E         {'boric_acid': 0} != {'boric_acid': 2}
-E         {'nickel_sulfate_hexahydrate': 0} != {'nickel_sulfate_hexahydrate': 1}
 E         {'nickel_chloride_hexahydrate': 0} != {'nickel_chloride_hexahydrate': 5}
+E         {'nickel_sulfate_hexahydrate': 0} != {'nickel_sulfate_hexahydrate': 1}
+E         {'boric_acid': 0} != {'boric_acid': 2}
 E         Use -v to get more diff
 
-/tests/test_outputs.py:546: AssertionError
+/tests/test_outputs.py:548: AssertionError
 ________________ test_c5_predicted_uses_packaged_material_mass _________________
 
     def test_c5_predicted_uses_packaged_material_mass():
@@ -293,7 +293,7 @@ E         comparison failed
 E         Obtained: 70.0
 E         Expected: 77.53665791702389 ± 7.8e-11
 
-/tests/test_outputs.py:567: AssertionError
+/tests/test_outputs.py:569: AssertionError
 _____________________ test_c5_rejects_nonpositive_bag_size _____________________
 
     def test_c5_rejects_nonpositive_bag_size():
@@ -305,7 +305,7 @@ _____________________ test_c5_rejects_nonpositive_bag_size _____________________
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:601: Failed
+/tests/test_outputs.py:603: Failed
 _______________________ test_e2e_state_transition_matrix _______________________
 
     def test_e2e_state_transition_matrix():
@@ -327,7 +327,63 @@ E
 E         Left contains one more item: 'released'
 E         Use -v to get more diff
 
-/tests/test_outputs.py:626: AssertionError
+/tests/test_outputs.py:628: AssertionError
+_____________________ test_e2e_cross_process_release_state _____________________
+
+    def test_e2e_cross_process_release_state():
+        """case_id=NI-F7-03; case_id=NI-F7-04; case_id=NI-F7-05; case_id=NI-F7-07; case_id=NI-F7-08; case_id=NI-F7-09; case_id=NI-F7-10. 题面原文：「同一批号在三个独立进程里依次写入拒收、放行、再次拒收后，读回的状态顺序仍应完整」。"""
+        process_code = (
+            "import json,sys\n"
+            "from bath_audit.release_state import audit, surface\n"
+            "events=json.loads(sys.argv[1])\n"
+            "mode=sys.argv[2]\n"
+            "state=sys.argv[3]\n"
+            "result=audit(events, state_path=state) if mode == 'audit' "
+            "else surface(events, state_path=state)\n"
+            "print(json.dumps(result, ensure_ascii=False))\n"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / "release-state.json"
+            expected = [
+                {"event_id": "run-01", "batch_id": "B-2026-01", "status": "rejected"},
+                {"event_id": "run-02", "batch_id": "B-2026-01", "status": "released"},
+                {"event_id": "run-03", "batch_id": "B-2026-01", "status": "rejected"},
+            ]
+            first = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    process_code,
+                    json.dumps([expected[0]]),
+                    "audit",
+                    str(state_path),
+                ],
+                cwd="/workspace",
+                capture_output=True,
+                text=True,
+            )
+>           assert first.returncode == 0, first.stderr
+E           AssertionError: Traceback (most recent call last):
+E               File "<string>", line 6, in <module>
+E             TypeError: audit() got an unexpected keyword argument 'state_path'
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-c', "import json,sys\nfrom bath_audit.release_state import audit, su...ast):\n  File "<string>", line 6, in <module>\nTypeError: audit() got an unexpected keyword argument \'state_path\'\n').returncode
+
+/tests/test_outputs.py:671: AssertionError
+________________ test_e2e_state_write_failure_preserves_journal ________________
+
+    def test_e2e_state_write_failure_preserves_journal():
+        """case_id=NI-F7-06. 题面原文：「失败不得改动原文件」：原子替换失败后保留既有状态日志。"""
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / "release-state.json"
+>           audit(
+                [{"event_id": "run-01", "batch_id": "B-2026-01", "status": "rejected"}],
+                state_path=state_path,
+            )
+E           TypeError: audit() got an unexpected keyword argument 'state_path'
+
+/tests/test_outputs.py:750: TypeError
 ____________________________ test_e2e_sample_report ____________________________
 
     def test_e2e_sample_report():
@@ -350,7 +406,7 @@ E         comparison failed
 E         Obtained: 62.83783512949674
 E         Expected: 61.89874072949673 ± 6.2e-11
 
-/tests/test_outputs.py:648: AssertionError
+/tests/test_outputs.py:787: AssertionError
 __________________________ test_e2e_reordered_columns __________________________
 
     def test_e2e_reordered_columns():
@@ -368,9 +424,9 @@ __________________________ test_e2e_reordered_columns __________________________
 E           AssertionError: error: unexpected columns
 E             
 E           assert 1 == 0
-E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmp0e6szr3q/reordered.csv', '/tmp/tmp0e6szr3q/batch.json'], returncode=1, stdout='', stderr='error: unexpected columns\n').returncode
+E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpfx556skg/reordered.csv', '/tmp/tmpfx556skg/batch.json'], returncode=1, stdout='', stderr='error: unexpected columns\n').returncode
 
-/tests/test_outputs.py:722: AssertionError
+/tests/test_outputs.py:861: AssertionError
 ____________________ test_e2e_invalid_row_preserves_output _____________________
 
     def test_e2e_invalid_row_preserves_output():
@@ -387,16 +443,16 @@ ____________________ test_e2e_invalid_row_preserves_output _____________________
             completed = _run_cli(record_path, output_path)
 >           assert completed.returncode != 0
 E           AssertionError: assert 0 != 0
-E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpmpe7vktq/invalid.csv', '/tmp/tmpmpe7vktq/batch.json'], returncode=0, stdout='', stderr='').returncode
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpw6wl76wr/invalid.csv', '/tmp/tmpw6wl76wr/batch.json'], returncode=0, stdout='', stderr='').returncode
 
-/tests/test_outputs.py:760: AssertionError
+/tests/test_outputs.py:899: AssertionError
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-ghki06hc'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-zvzegs2n'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-i9ybpe7r'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-e5pqfp18'
     config.cache.set("cache/lastfailed", self.lastfailed)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -419,9 +475,11 @@ FAILED ../tests/test_outputs.py::test_c5_rounds_each_material_up_to_whole_bags
 FAILED ../tests/test_outputs.py::test_c5_predicted_uses_packaged_material_mass
 FAILED ../tests/test_outputs.py::test_c5_rejects_nonpositive_bag_size - Faile...
 FAILED ../tests/test_outputs.py::test_e2e_state_transition_matrix - Assertion...
+FAILED ../tests/test_outputs.py::test_e2e_cross_process_release_state - Asser...
+FAILED ../tests/test_outputs.py::test_e2e_state_write_failure_preserves_journal
 FAILED ../tests/test_outputs.py::test_e2e_sample_report - assert 62.837835129...
 FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - AssertionError:...
 FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
-21 failed, 7 passed, 2 warnings in 0.52s
+23 failed, 7 passed, 2 warnings in 0.71s
 reward=0.140000
-summary=tests=28 passed=7 failed=21
+summary=tests=30 passed=7 failed=23

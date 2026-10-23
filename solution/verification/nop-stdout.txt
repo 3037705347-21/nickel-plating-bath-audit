@@ -82,6 +82,30 @@ NI-F7-01 FAILED
 NI-F7-02 FAILED test_e2e_state_transition_matrix
 test_outputs.py::test_e2e_state_transition_matrix FAILED
 NI-F7-02 FAILED
+NI-F7-03 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-03 FAILED
+NI-F7-04 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-04 FAILED
+NI-F7-05 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-05 FAILED
+NI-F7-06 FAILED test_e2e_state_write_failure_preserves_journal
+test_outputs.py::test_e2e_state_write_failure_preserves_journal FAILED
+NI-F7-06 FAILED
+NI-F7-07 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-07 FAILED
+NI-F7-08 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-08 FAILED
+NI-F7-09 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-09 FAILED
+NI-F7-10 FAILED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state FAILED
+NI-F7-10 FAILED
 NI-E2E-01 FAILED test_e2e_sample_report
 test_outputs.py::test_e2e_sample_report FAILED
 NI-E2E-01 FAILED

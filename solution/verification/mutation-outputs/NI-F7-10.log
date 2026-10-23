@@ -1,0 +1,10 @@
+$ docker exec c4ce193a64654f1c09dd62d8d0d11d0733245ef1a48b002954b328fdc6d3bbf9 python -c 'direct test function test_e2e_cross_process_release_state'
+NI-F7-10 FAILED test_e2e_cross_process_release_state
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 711, in test_e2e_cross_process_release_state
+    assert summary["counts"] == {"released": 0, "rejected": 1}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-F7-10 FAILED (direct-test exit=1)

@@ -1,0 +1,14 @@
+$ docker exec c4ce193a64654f1c09dd62d8d0d11d0733245ef1a48b002954b328fdc6d3bbf9 python -c 'direct test function test_e2e_state_write_failure_preserves_journal'
+NI-F7-06 FAILED test_e2e_state_write_failure_preserves_journal
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 761, in test_e2e_state_write_failure_preserves_journal
+    with pytest.raises(OSError):
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/worker/.local/lib/python3.12/site-packages/_pytest/raises.py", line 712, in __exit__
+    fail(f"DID NOT RAISE {self.expected_exceptions[0]!r}")
+  File "/home/worker/.local/lib/python3.12/site-packages/_pytest/outcomes.py", line 177, in fail
+    raise Failed(msg=reason, pytrace=pytrace)
+Failed: DID NOT RAISE <class 'OSError'>
+
+NI-F7-06 FAILED (direct-test exit=1)

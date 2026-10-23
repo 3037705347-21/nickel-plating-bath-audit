@@ -1,8 +1,8 @@
-$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_c3_equal_demand_uses_only_nickel_chloride'
+$ docker exec c4ce193a64654f1c09dd62d8d0d11d0733245ef1a48b002954b328fdc6d3bbf9 python -c 'direct test function test_c3_equal_demand_uses_only_nickel_chloride'
 NI-C3-05 FAILED test_c3_equal_demand_uses_only_nickel_chloride
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 442, in test_c3_equal_demand_uses_only_nickel_chloride
+  File "/tests/test_outputs.py", line 444, in test_c3_equal_demand_uses_only_nickel_chloride
     actual = makeup_plan(
              ^^^^^^^^^^^^
   File "/workspace/bath_audit/makeup.py", line 72, in makeup_plan

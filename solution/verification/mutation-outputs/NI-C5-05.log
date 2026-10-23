@@ -1,8 +1,8 @@
-$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_c5_predicted_uses_packaged_material_mass'
+$ docker exec c4ce193a64654f1c09dd62d8d0d11d0733245ef1a48b002954b328fdc6d3bbf9 python -c 'direct test function test_c5_predicted_uses_packaged_material_mass'
 NI-C5-05 FAILED test_c5_predicted_uses_packaged_material_mass
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 567, in test_c5_predicted_uses_packaged_material_mass
+  File "/tests/test_outputs.py", line 569, in test_c5_predicted_uses_packaged_material_mass
     assert actual["predicted_g_l"]["nickel"] == pytest.approx(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError

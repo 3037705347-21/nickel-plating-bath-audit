@@ -82,6 +82,30 @@ NI-F7-01 PASSED
 NI-F7-02 PASSED test_e2e_state_transition_matrix
 test_outputs.py::test_e2e_state_transition_matrix PASSED
 NI-F7-02 PASSED
+NI-F7-03 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-03 PASSED
+NI-F7-04 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-04 PASSED
+NI-F7-05 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-05 PASSED
+NI-F7-06 PASSED test_e2e_state_write_failure_preserves_journal
+test_outputs.py::test_e2e_state_write_failure_preserves_journal PASSED
+NI-F7-06 PASSED
+NI-F7-07 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-07 PASSED
+NI-F7-08 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-08 PASSED
+NI-F7-09 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-09 PASSED
+NI-F7-10 PASSED test_e2e_cross_process_release_state
+test_outputs.py::test_e2e_cross_process_release_state PASSED
+NI-F7-10 PASSED
 NI-E2E-01 PASSED test_e2e_sample_report
 test_outputs.py::test_e2e_sample_report PASSED
 NI-E2E-01 PASSED

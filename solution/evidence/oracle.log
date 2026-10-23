@@ -1,4 +1,4 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-oracle.pZF3z3:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-oracle.54omzZ:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-oracle.nN96ty:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-oracle.61q5yX:/logs harbor-nickel-bath-quality:89064 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
@@ -7,7 +7,7 @@ Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
 Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 163.0 kB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 933.1 kB/s eta 0:00:00
 Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
   Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
 Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
@@ -18,13 +18,13 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-............................                                             [100%]
+..............................                                           [100%]
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-4a0mab_h'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-4gsn2rzz'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-28 passed, 1 warning in 0.38s
+30 passed, 1 warning in 0.89s
 reward=1.000000
-summary=tests=28 passed=28 failed=0
+summary=tests=30 passed=30 failed=0

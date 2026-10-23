@@ -1,4 +1,4 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-hardcoded.kYV4xZ:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-hardcoded.n603q9:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-hardcoded.ycONJb:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-hardcoded.U1k4bM:/logs harbor-nickel-bath-quality:89064 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
@@ -18,7 +18,7 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-.........................FFF                                             [100%]
+...........................FFF                                           [100%]
 =================================== FAILURES ===================================
 ____________________________ test_e2e_sample_report ____________________________
 
@@ -42,7 +42,7 @@ E         comparison failed
 E         Obtained: 62.00957709999999
 E         Expected: 61.89874072949673 ± 6.2e-11
 
-/tests/test_outputs.py:648: AssertionError
+/tests/test_outputs.py:787: AssertionError
 __________________________ test_e2e_reordered_columns __________________________
 
     def test_e2e_reordered_columns():
@@ -67,7 +67,7 @@ E         comparison failed
 E         Obtained: 62.00957709999999
 E         Expected: 61.89874072949673 ± 6.2e-11
 
-/tests/test_outputs.py:724: AssertionError
+/tests/test_outputs.py:863: AssertionError
 ____________________ test_e2e_invalid_row_preserves_output _____________________
 
     def test_e2e_invalid_row_preserves_output():
@@ -84,16 +84,16 @@ ____________________ test_e2e_invalid_row_preserves_output _____________________
             completed = _run_cli(record_path, output_path)
 >           assert completed.returncode != 0
 E           AssertionError: assert 0 != 0
-E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpgtrvrmo6/invalid.csv', '/tmp/tmpgtrvrmo6/batch.json'], returncode=0, stdout='', stderr='').returncode
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpictq_x7_/invalid.csv', '/tmp/tmpictq_x7_/batch.json'], returncode=0, stdout='', stderr='').returncode
 
-/tests/test_outputs.py:760: AssertionError
+/tests/test_outputs.py:899: AssertionError
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-ir35rwep'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-xwsoubno'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-se0ltv9v'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-sjom4m8l'
     config.cache.set("cache/lastfailed", self.lastfailed)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -101,6 +101,6 @@ E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 
 FAILED ../tests/test_outputs.py::test_e2e_sample_report - assert 62.009577099...
 FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - assert 62.00957...
 FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
-3 failed, 25 passed, 2 warnings in 0.32s
+3 failed, 27 passed, 2 warnings in 0.92s
 reward=0.900000
-summary=tests=28 passed=25 failed=3
+summary=tests=30 passed=27 failed=3

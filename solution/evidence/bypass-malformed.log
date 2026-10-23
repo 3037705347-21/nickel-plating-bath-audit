@@ -1,4 +1,4 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-malformed.m86u3d:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-malformed.1CY9Sc:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-malformed.n4y7et:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-bypass-malformed.LAr2Yw:/logs harbor-nickel-bath-quality:89064 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
@@ -7,7 +7,7 @@ Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
 Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 956.1 kB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 238.5 kB/s eta 0:00:00
 Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
   Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
 Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
@@ -18,7 +18,7 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-.........................FFF                                             [100%]
+...........................FFF                                           [100%]
 =================================== FAILURES ===================================
 ____________________________ test_e2e_sample_report ____________________________
 
@@ -33,7 +33,7 @@ ____________________________ test_e2e_sample_report ____________________________
 >           actual = json.loads(output.read_text(encoding="utf-8"))
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-/tests/test_outputs.py:645: 
+/tests/test_outputs.py:784: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 /usr/local/lib/python3.12/json/__init__.py:346: in loads
     return _default_decoder.decode(s)
@@ -43,7 +43,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <json.decoder.JSONDecoder object at 0xffffb3f387a0>
+self = <json.decoder.JSONDecoder object at 0xffff8d6687a0>
 s = '{"batch_id": "Ni-2026-1018-A",\n', idx = 0
 
     def raw_decode(self, s, idx=0):
@@ -78,7 +78,7 @@ __________________________ test_e2e_reordered_columns __________________________
 >           actual = json.loads(output_path.read_text(encoding="utf-8"))
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-/tests/test_outputs.py:723: 
+/tests/test_outputs.py:862: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 /usr/local/lib/python3.12/json/__init__.py:346: in loads
     return _default_decoder.decode(s)
@@ -88,7 +88,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <json.decoder.JSONDecoder object at 0xffffb3f387a0>
+self = <json.decoder.JSONDecoder object at 0xffff8d6687a0>
 s = '{"batch_id": "Ni-2026-1018-A",\n', idx = 0
 
     def raw_decode(self, s, idx=0):
@@ -122,16 +122,16 @@ ____________________ test_e2e_invalid_row_preserves_output _____________________
             completed = _run_cli(record_path, output_path)
 >           assert completed.returncode != 0
 E           AssertionError: assert 0 != 0
-E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpbjg9psan/invalid.csv', '/tmp/tmpbjg9psan/batch.json'], returncode=0, stdout='', stderr='').returncode
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmpohv0ja__/invalid.csv', '/tmp/tmpohv0ja__/batch.json'], returncode=0, stdout='', stderr='').returncode
 
-/tests/test_outputs.py:760: AssertionError
+/tests/test_outputs.py:899: AssertionError
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-0mr4yxx_'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-x2g76xmr'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-ccvgv3po'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-p7x2e6hx'
     config.cache.set("cache/lastfailed", self.lastfailed)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -139,6 +139,6 @@ E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 
 FAILED ../tests/test_outputs.py::test_e2e_sample_report - json.decoder.JSONDe...
 FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - json.decoder.JS...
 FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
-3 failed, 25 passed, 2 warnings in 0.31s
+3 failed, 27 passed, 2 warnings in 0.89s
 reward=0.900000
-summary=tests=28 passed=25 failed=3
+summary=tests=30 passed=27 failed=3
