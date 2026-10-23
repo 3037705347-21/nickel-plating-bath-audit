@@ -1,0 +1,87 @@
+NI-C1-01 PASSED test_c1_edta_blank_correction
+test_outputs.py::test_c1_edta_blank_correction PASSED
+NI-C1-01 PASSED
+NI-C1-02 PASSED test_c1_nickel_stoichiometry_and_molar_mass
+test_outputs.py::test_c1_nickel_stoichiometry_and_molar_mass PASSED
+NI-C1-02 PASSED
+NI-C1-03 PASSED test_c1_zero_net_titrant_returns_zero
+test_outputs.py::test_c1_zero_net_titrant_returns_zero PASSED
+NI-C1-03 PASSED
+NI-C1-04 PASSED test_c1_invalid_sample_volume_rejected
+test_outputs.py::test_c1_invalid_sample_volume_rejected PASSED
+NI-C1-04 PASSED
+NI-C1-05 PASSED test_c1_copper_interference_subtracted
+test_outputs.py::test_c1_copper_interference_subtracted PASSED
+NI-C1-05 PASSED
+NI-C1-06 PASSED test_c1_dilution_factor_applied
+test_outputs.py::test_c1_dilution_factor_applied PASSED
+NI-C1-06 PASSED
+NI-C2-01 PASSED test_c2_boric_blank_correction
+test_outputs.py::test_c2_boric_blank_correction PASSED
+NI-C2-01 PASSED
+NI-C2-02 PASSED test_c2_boric_one_to_one_stoichiometry
+test_outputs.py::test_c2_boric_one_to_one_stoichiometry PASSED
+NI-C2-02 PASSED
+NI-C2-03 PASSED test_c2_boric_zero_net_titrant_returns_zero
+test_outputs.py::test_c2_boric_zero_net_titrant_returns_zero PASSED
+NI-C2-03 PASSED
+NI-C3-01 PASSED test_c3_coupled_nickel_salts
+test_outputs.py::test_c3_coupled_nickel_salts PASSED
+NI-C3-01 PASSED
+NI-C3-06 PASSED test_c3_coupled_nickel_salts
+test_outputs.py::test_c3_coupled_nickel_salts PASSED
+NI-C3-06 PASSED
+NI-C3-02 PASSED test_c3_assay_applied_to_raw_mass
+test_outputs.py::test_c3_assay_applied_to_raw_mass PASSED
+NI-C3-02 PASSED
+NI-C3-03 PASSED test_c3_boric_acid_addition
+test_outputs.py::test_c3_boric_acid_addition PASSED
+NI-C3-03 PASSED
+NI-C3-04 PASSED test_c3_rejects_chloride_without_enough_nickel
+test_outputs.py::test_c3_rejects_chloride_without_enough_nickel PASSED
+NI-C3-04 PASSED
+NI-C3-05 PASSED test_c3_equal_demand_uses_only_nickel_chloride
+test_outputs.py::test_c3_equal_demand_uses_only_nickel_chloride PASSED
+NI-C3-05 PASSED
+NI-C4-01 PASSED test_c4_faraday_deposition
+test_outputs.py::test_c4_faraday_deposition PASSED
+NI-C4-01 PASSED
+NI-C4-02 PASSED test_c4_dragout_raises_start_targets
+test_outputs.py::test_c4_dragout_raises_start_targets PASSED
+NI-C4-02 PASSED
+NI-C4-03 PASSED test_c4_dragout_losses_use_start_concentration
+test_outputs.py::test_c4_dragout_losses_use_start_concentration PASSED
+NI-C4-03 PASSED
+NI-C4-04 PASSED test_c4_rejects_full_tank_dragout
+test_outputs.py::test_c4_rejects_full_tank_dragout PASSED
+NI-C4-04 PASSED
+NI-C4-05 PASSED test_c4_zero_charge_and_dragout_leave_targets_unchanged
+test_outputs.py::test_c4_zero_charge_and_dragout_leave_targets_unchanged PASSED
+NI-C4-05 PASSED
+NI-C4-06 PASSED test_c4_zero_efficiency_deposits_no_nickel
+test_outputs.py::test_c4_zero_efficiency_deposits_no_nickel PASSED
+NI-C4-06 PASSED
+NI-C5-01 PASSED test_c5_rounds_each_material_up_to_whole_bags
+test_outputs.py::test_c5_rounds_each_material_up_to_whole_bags PASSED
+NI-C5-01 PASSED
+NI-C5-02 PASSED test_c5_predicted_uses_packaged_material_mass
+test_outputs.py::test_c5_predicted_uses_packaged_material_mass PASSED
+NI-C5-02 PASSED
+NI-C5-05 PASSED test_c5_predicted_uses_packaged_material_mass
+test_outputs.py::test_c5_predicted_uses_packaged_material_mass PASSED
+NI-C5-05 PASSED
+NI-C5-03 PASSED test_c5_no_deficit_means_no_bags
+test_outputs.py::test_c5_no_deficit_means_no_bags PASSED
+NI-C5-03 PASSED
+NI-C5-04 PASSED test_c5_rejects_nonpositive_bag_size
+test_outputs.py::test_c5_rejects_nonpositive_bag_size PASSED
+NI-C5-04 PASSED
+NI-E2E-01 PASSED test_e2e_sample_report
+test_outputs.py::test_e2e_sample_report PASSED
+NI-E2E-01 PASSED
+NI-E2E-02 PASSED test_e2e_reordered_columns
+test_outputs.py::test_e2e_reordered_columns PASSED
+NI-E2E-02 PASSED
+NI-E2E-03 PASSED test_e2e_invalid_row_preserves_output
+test_outputs.py::test_e2e_invalid_row_preserves_output PASSED
+NI-E2E-03 PASSED

@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c5_no_deficit_means_no_bags'
+NI-C5-03 FAILED test_c5_no_deficit_means_no_bags
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 587, in test_c5_no_deficit_means_no_bags
+    assert actual["bags"] == {
+           ^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-C5-03 FAILED (pytest exit=1)

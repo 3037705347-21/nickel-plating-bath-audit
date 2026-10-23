@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c1_copper_interference_subtracted'
+NI-C1-05 FAILED test_c1_copper_interference_subtracted
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 353, in test_c1_copper_interference_subtracted
+    assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-C1-05 FAILED (pytest exit=1)

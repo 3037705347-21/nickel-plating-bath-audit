@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c4_faraday_deposition'
+NI-C4-01 FAILED test_c4_faraday_deposition
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 472, in test_c4_faraday_deposition
+    assert actual["nickel_deposited_g"] == pytest.approx(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-C4-01 FAILED (pytest exit=1)

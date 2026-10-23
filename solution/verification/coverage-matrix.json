@@ -1,0 +1,587 @@
+{
+  "version": 3,
+  "target_difficulty": "expert",
+  "reviewed_instruction_word_by_word": true,
+  "reviewed_tests_after_authoring": true,
+  "reviewed_atomicity": true,
+  "reviewed_category_mapping": true,
+  "instruction_sha256": "de71384e79f6fd1a7b90dc1f34e91c70d149e6a0b2b0423bebc5ce9b129d8390",
+  "tests_sha256": "db31b7e2e65e66a0026684b1c95d89bac8a0bc1d98cf5862234aad72b96365be",
+  "oracle_stdout_sha256": "db5242e39b0dce59e4799133782e723c47d141da9ddf6f59bbaafdf99c883cd7",
+  "oracle_cases_sha256": "38ee4a2df582c5afddc3bb1d112d9b801c2e87653fcfb3b35946fb53d528bf95",
+  "coverage_packages": {
+    "json_text": {
+      "applicable": true,
+      "behavior_ids": [
+        "NI-C1-01",
+        "NI-C1-02",
+        "NI-C1-03",
+        "NI-C1-04",
+        "NI-C1-05",
+        "NI-C1-06",
+        "NI-C2-01",
+        "NI-C2-02",
+        "NI-C2-03",
+        "NI-C3-01",
+        "NI-C3-06",
+        "NI-C3-02",
+        "NI-C3-03",
+        "NI-C3-04",
+        "NI-C3-05",
+        "NI-C4-01",
+        "NI-C4-02",
+        "NI-C4-03",
+        "NI-C4-04",
+        "NI-C4-05",
+        "NI-C4-06",
+        "NI-C5-01",
+        "NI-C5-02",
+        "NI-C5-05",
+        "NI-C5-03",
+        "NI-C5-04",
+        "NI-E2E-02"
+      ]
+    },
+    "filesystem": {
+      "applicable": true,
+      "behavior_ids": [
+        "NI-E2E-01"
+      ]
+    },
+    "atomic_publish": {
+      "applicable": true,
+      "behavior_ids": [
+        "NI-E2E-03"
+      ]
+    },
+    "database": {
+      "applicable": false,
+      "reason": "本题不访问数据库"
+    },
+    "time_selection": {
+      "applicable": false,
+      "reason": "本题不做时间窗口或时间选择"
+    },
+    "http_network": {
+      "applicable": false,
+      "reason": "本题运行时不访问网络"
+    },
+    "initial_baseline": {
+      "applicable": false,
+      "reason": "本题没有独立初始数据集或恢复基线"
+    }
+  },
+  "behaviors": [
+    {
+      "id": "NI-C1-01",
+      "location": "instruction.md:26",
+      "source_text": "`batch_id`不能为空",
+      "behavior": "删除EDTA空白扣除，保留总滴定体积",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_edta_blank_correction",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除EDTA空白扣除，保留总滴定体积",
+      "case_id": "NI-C1-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C1-02",
+      "location": "instruction.md:26",
+      "source_text": "所有数值必须是有限数",
+      "behavior": "把镍摩尔质量替换为近似常数值",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_nickel_stoichiometry_and_molar_mass",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把镍摩尔质量替换为近似常数值",
+      "case_id": "NI-C1-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C1-03",
+      "location": "instruction.md:26",
+      "source_text": "空白不得大于对应滴定体积",
+      "behavior": "把空白等于滴定体积的边界改为直接拒绝",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_zero_net_titrant_returns_zero",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把空白等于滴定体积的边界改为直接拒绝",
+      "case_id": "NI-C1-03",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C1-04",
+      "location": "instruction.md:125",
+      "source_text": "输入校验或配方约束失败时",
+      "behavior": "把非正样品体积边界放宽为零",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_invalid_sample_volume_rejected",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把非正样品体积边界放宽为零",
+      "case_id": "NI-C1-04",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C1-05",
+      "location": "instruction.md:3",
+      "source_text": "原子吸收测了铜污染",
+      "behavior": "把铜干扰从扣减改为叠加",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_copper_interference_subtracted",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把铜干扰从扣减改为叠加",
+      "case_id": "NI-C1-05",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C1-06",
+      "location": "instruction.md:3",
+      "source_text": "循环过滤后",
+      "behavior": "删除镍浓度的稀释倍数换算",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c1_dilution_factor_applied",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除镍浓度的稀释倍数换算",
+      "case_id": "NI-C1-06",
+      "kind": "pass_to_pass"
+    },
+    {
+      "id": "NI-C2-01",
+      "location": "instruction.md:28",
+      "source_text": "硼酸加入甘露醇后",
+      "behavior": "删除硼酸空白扣除",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c2_boric_blank_correction",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除硼酸空白扣除",
+      "case_id": "NI-C2-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C2-02",
+      "location": "instruction.md:28",
+      "source_text": "与NaOH按摩尔比1:1反应",
+      "behavior": "把硼酸与NaOH的一比一计量改成二倍",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c2_boric_one_to_one_stoichiometry",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把硼酸与NaOH的一比一计量改成二倍",
+      "case_id": "NI-C2-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C2-03",
+      "location": "instruction.md:123",
+      "source_text": "三个浓度函数返回槽液g/L",
+      "behavior": "把硼酸等量空白的边界改为拒绝",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c2_boric_zero_net_titrant_returns_zero",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把硼酸等量空白的边界改为拒绝",
+      "case_id": "NI-C2-03",
+      "kind": "pass_to_pass"
+    },
+    {
+      "id": "NI-C3-01",
+      "location": "instruction.md:49",
+      "source_text": "补加单只能用六水硫酸镍",
+      "behavior": "把氯化镍摩尔数固定为零，忽略氯缺口",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_coupled_nickel_salts",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把氯化镍摩尔数固定为零，忽略氯缺口",
+      "case_id": "NI-C3-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C3-06",
+      "location": "instruction.md:53",
+      "source_text": "镍和氯必须同时配平",
+      "behavior": "把氯缺口摩尔数固定为零，破坏双盐联立",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_coupled_nickel_salts",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把氯缺口摩尔数固定为零，破坏双盐联立",
+      "case_id": "NI-C3-06",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C3-02",
+      "location": "instruction.md:49",
+      "source_text": "六水氯化镍和硼酸三种商品原料",
+      "behavior": "忽略硫酸镍商品有效含量",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_assay_applied_to_raw_mass",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "忽略硫酸镍商品有效含量",
+      "case_id": "NI-C3-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C3-03",
+      "location": "instruction.md:53",
+      "source_text": "先得到精确的理论补加质量",
+      "behavior": "删除硼酸有效含量折算",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_boric_acid_addition",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除硼酸有效含量折算",
+      "case_id": "NI-C3-03",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C3-04",
+      "location": "instruction.md:53",
+      "source_text": "若氯缺口所需的氯化镍摩尔数超过镍缺口摩尔数",
+      "behavior": "把不可配平边界放大到实际上不触发",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_rejects_chloride_without_enough_nickel",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把不可配平边界放大到实际上不触发",
+      "case_id": "NI-C3-04",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C3-05",
+      "location": "instruction.md:53",
+      "source_text": "现有两种镍盐无法完成配方",
+      "behavior": "在等量边界额外加入氯化镍摩尔数",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c3_equal_demand_uses_only_nickel_chloride",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "在等量边界额外加入氯化镍摩尔数",
+      "case_id": "NI-C3-05",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C4-01",
+      "location": "instruction.md:73",
+      "source_text": "`nickel_deposited_g` 只计电解沉积，不带出",
+      "behavior": "错误地把镍沉积的电子数改为一",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_faraday_deposition",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "错误地把镍沉积的电子数改为一",
+      "case_id": "NI-C4-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C4-02",
+      "location": "instruction.md:44",
+      "source_text": "C_start * (tank_volume_l - dragout_l) = C_end * tank_volume_l",
+      "behavior": "删除带出液对剩余槽容的影响",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_dragout_raises_start_targets",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除带出液对剩余槽容的影响",
+      "case_id": "NI-C4-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C4-03",
+      "location": "instruction.md:73",
+      "source_text": "带出损失按上述班前浓度和带出液量计算",
+      "behavior": "把带出损失错误置零",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_dragout_losses_use_start_concentration",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把带出损失错误置零",
+      "case_id": "NI-C4-03",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C4-04",
+      "location": "instruction.md:26",
+      "source_text": "带出液量必须小于槽容",
+      "behavior": "允许带出体积恰好等于槽容",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_rejects_full_tank_dragout",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "允许带出体积恰好等于槽容",
+      "case_id": "NI-C4-04",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C4-05",
+      "location": "instruction.md:26",
+      "source_text": "计划安时数、空白滴定体积、铜含量和带出液量不得为负",
+      "behavior": "把计划安时数零值错误视为非法",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_zero_charge_and_dragout_leave_targets_unchanged",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把计划安时数零值错误视为非法",
+      "case_id": "NI-C4-05",
+      "kind": "pass_to_pass"
+    },
+    {
+      "id": "NI-C4-06",
+      "location": "instruction.md:123",
+      "source_text": "电流效率不在0到1之间",
+      "behavior": "把零电流效率错误视为非法",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c4_zero_efficiency_deposits_no_nickel",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把零电流效率错误视为非法",
+      "case_id": "NI-C4-06",
+      "kind": "pass_to_pass"
+    },
+    {
+      "id": "NI-C5-01",
+      "location": "instruction.md:55",
+      "source_text": "理论质量必须**向上取整**到对应包装规格的整数倍",
+      "behavior": "把整袋向上取整改成四舍五入",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c5_rounds_each_material_up_to_whole_bags",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把整袋向上取整改成四舍五入",
+      "case_id": "NI-C5-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C5-02",
+      "location": "instruction.md:71",
+      "source_text": "必须用整袋商品质量乘有效含量得到的实际纯品摩尔数反算",
+      "behavior": "把整袋预测镍浓度的槽容换成1升",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c5_predicted_uses_packaged_material_mass",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把整袋预测镍浓度的槽容换成1升",
+      "case_id": "NI-C5-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C5-05",
+      "location": "instruction.md:71",
+      "source_text": "不能用理论质量、目标值或仅按理论质量计算的浓度直接填回",
+      "behavior": "删除预测镍浓度中的双盐摩尔贡献",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c5_predicted_uses_packaged_material_mass",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "删除预测镍浓度中的双盐摩尔贡献",
+      "case_id": "NI-C5-05",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-C5-03",
+      "location": "instruction.md:55",
+      "source_text": "缺口为零时袋数和补加质量都为零",
+      "behavior": "无缺口时在整数袋数上多加一袋",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c5_no_deficit_means_no_bags",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "无缺口时在整数袋数上多加一袋",
+      "case_id": "NI-C5-03",
+      "kind": "pass_to_pass"
+    },
+    {
+      "id": "NI-C5-04",
+      "location": "instruction.md:55",
+      "source_text": "仓库不做拆袋",
+      "behavior": "允许零包装规格进入计算",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_c5_rejects_nonpositive_bag_size",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "允许零包装规格进入计算",
+      "case_id": "NI-C5-04",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-E2E-01",
+      "location": "instruction.md:123",
+      "source_text": "`package_plan` 接收该配方",
+      "behavior": "把批单编号替换为固定错误值",
+      "category": "filesystem",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_e2e_sample_report",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把批单编号替换为固定错误值",
+      "case_id": "NI-E2E-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-E2E-02",
+      "location": "instruction.md:13",
+      "source_text": "列名固定为",
+      "behavior": "恢复为按列顺序而不是列名集合校验",
+      "category": "json_text",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_e2e_reordered_columns",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "恢复为按列顺序而不是列名集合校验",
+      "case_id": "NI-E2E-02",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-E2E-03",
+      "location": "instruction.md:125",
+      "source_text": "目标输出文件不得被创建或覆盖",
+      "behavior": "把校验失败路径替换为固定半成品批单",
+      "category": "atomic_publish",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_e2e_invalid_row_preserves_output",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把校验失败路径替换为固定半成品批单",
+      "case_id": "NI-E2E-03",
+      "kind": "fail_to_pass"
+    }
+  ],
+  "core_challenges": [
+    {
+      "id": "C1",
+      "capability": "滴定换算与铜干扰校正",
+      "initial_defect": "草稿脚本漏空白或铜校正",
+      "counterexamples": "分别破坏空白、摩尔质量和稀释",
+      "direct_tests": [
+        "test_c1_edta_blank_correction",
+        "test_c1_nickel_stoichiometry_and_molar_mass",
+        "test_c1_copper_interference_subtracted"
+      ],
+      "combination_case": "test_e2e_sample_report"
+    },
+    {
+      "id": "C2",
+      "capability": "硼酸一比一计量",
+      "initial_defect": "把硼酸错误按二倍计量",
+      "counterexamples": "删除空白扣除或替换化学计量倍数",
+      "direct_tests": [
+        "test_c2_boric_blank_correction",
+        "test_c2_boric_one_to_one_stoichiometry"
+      ],
+      "combination_case": "test_e2e_sample_report"
+    },
+    {
+      "id": "C3",
+      "capability": "镍氯双盐联立",
+      "initial_defect": "忽略氯化镍或商品有效含量",
+      "counterexamples": "将氯化镍置零或放宽不可配平边界",
+      "direct_tests": [
+        "test_c3_coupled_nickel_salts",
+        "test_c3_assay_applied_to_raw_mass",
+        "test_c3_rejects_chloride_without_enough_nickel"
+      ],
+      "combination_case": "test_e2e_sample_report"
+    },
+    {
+      "id": "C4",
+      "capability": "班次沉积和带出反算",
+      "initial_defect": "直接拿班末目标配料",
+      "counterexamples": "删除法拉第电子数或带出体积",
+      "direct_tests": [
+        "test_c4_faraday_deposition",
+        "test_c4_dragout_raises_start_targets",
+        "test_c4_dragout_losses_use_start_concentration"
+      ],
+      "combination_case": "test_e2e_sample_report"
+    },
+    {
+      "id": "C5",
+      "capability": "整袋发料与预测浓度",
+      "initial_defect": "直接使用理论质量或向下取整",
+      "counterexamples": "把整袋向上取整改成四舍五入或按1升槽容预测",
+      "direct_tests": [
+        "test_c5_rounds_each_material_up_to_whole_bags",
+        "test_c5_predicted_uses_packaged_material_mass",
+        "test_c5_no_deficit_means_no_bags"
+      ],
+      "combination_case": "test_e2e_sample_report"
+    }
+  ],
+  "semantic_contracts": {
+    "boundary_pairs": {
+      "applicable": false,
+      "reason": "本题题面没有把同一数值的接受和拒绝写成允许与拒绝的配对输出"
+    },
+    "output_contracts": {
+      "applicable": true,
+      "items": [
+        {
+          "id": "OUT-01",
+          "source_text": "输入校验或配方约束失败时",
+          "channels": [
+            "stderr"
+          ],
+          "expectation": "nonempty",
+          "test_names": [
+            "test_e2e_invalid_row_preserves_output"
+          ]
+        }
+      ]
+    },
+    "failure_stages": {
+      "applicable": true,
+      "items": [
+        {
+          "id": "FAIL-01",
+          "stage": "化验记录校验失败",
+          "source_text": "输入校验或配方约束失败时",
+          "test_names": [
+            "test_e2e_invalid_row_preserves_output"
+          ],
+          "assertions": [
+            "completed.returncode != 0",
+            "completed.stderr.strip() != ''",
+            "output_path.read_text(encoding='utf-8') == 'existing result\\n'"
+          ]
+        }
+      ]
+    },
+    "timing_contracts": {
+      "applicable": false,
+      "reason": "本题没有对外承诺的秒级时限或调度时间契约"
+    }
+  }
+}

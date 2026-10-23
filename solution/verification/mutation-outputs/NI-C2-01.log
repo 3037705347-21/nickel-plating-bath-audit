@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c2_boric_blank_correction'
+NI-C2-01 FAILED test_c2_boric_blank_correction
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 368, in test_c2_boric_blank_correction
+    assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-C2-01 FAILED (pytest exit=1)

@@ -320,33 +320,33 @@ def _reference_report(row: dict[str, str]) -> dict[str, object]:
 
 
 def test_c1_edta_blank_correction():
-    """Subtract the EDTA blank before converting nickel moles."""
+    """case_id=NI-C1-01. 题面原文：「三种滴定的净体积都是」：EDTA净体积先行扣空白。"""
     expected = _reference_nickel(3.0, 14.25, 0.75, 0.05, 2.0, 0.10)
     actual = nickel_concentration_g_l(3.0, 14.25, 0.75, 0.05, 2.0, 0.10)
     assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
 
 
 def test_c1_nickel_stoichiometry_and_molar_mass():
-    """Use the specified nickel molar mass and 1:1 EDTA stoichiometry."""
+    """case_id=NI-C1-02. 题面原文：「镍与EDTA按摩尔比1:1反应」：使用指定摩尔质量。"""
     expected = _reference_nickel(2.0, 21.45, 0.32, 0.1, 1.5, 0.08)
     actual = nickel_concentration_g_l(2.0, 21.45, 0.32, 0.1, 1.5, 0.08)
     assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
 
 
 def test_c1_zero_net_titrant_returns_zero():
-    """Return zero nickel when the blank consumes the entire titration."""
+    """case_id=NI-C1-03. 题面原文：「空白不得大于对应滴定体积」：等量时净体积为零。"""
     actual = nickel_concentration_g_l(2.0, 0.67, 0.67, 0.1, 1.0, 0.0)
     assert actual == pytest.approx(0.0, abs=1e-12)
 
 
 def test_c1_invalid_sample_volume_rejected():
-    """Reject a non-positive nickel sample volume."""
+    """case_id=NI-C1-04. 题面原文：「槽容、取样体积、稀释倍数」都必须大于零：零体积应被拒绝。"""
     with pytest.raises(ValueError):
         nickel_concentration_g_l(0.0, 14.0, 0.5, 0.1, 1.0, 0.0)
 
 
 def test_c1_copper_interference_subtracted():
-    """Subtract the copper equivalent reported by EDTA before use."""
+    """case_id=NI-C1-05. 题面原文：「真正的镍浓度要从表观镍中减去」：扣除铜当量。"""
     apparent = _reference_concentration(2.0, 21.45, 0.32, 0.1, NICKEL_G_PER_MOL)
     expected = apparent - 0.25 * NICKEL_G_PER_MOL / COPPER_G_PER_MOL
     actual = nickel_concentration_g_l(2.0, 21.45, 0.32, 0.1, 1.0, 0.25)
@@ -354,14 +354,14 @@ def test_c1_copper_interference_subtracted():
 
 
 def test_c1_dilution_factor_applied():
-    """Scale the aliquot result back to the undiluted bath sample."""
+    """case_id=NI-C1-06. 题面原文：「非正稀释倍数」应报错：正常倍数应回到原槽液基准。"""
     dilute = nickel_concentration_g_l(3.0, 14.25, 0.75, 0.05, 1.0, 0.0)
     concentrated = nickel_concentration_g_l(3.0, 14.25, 0.75, 0.05, 2.5, 0.0)
     assert concentrated == pytest.approx(dilute * 2.5, rel=1e-12, abs=1e-12)
 
 
 def test_c2_boric_blank_correction():
-    """Subtract the boric-acid blank before applying its stoichiometry."""
+    """case_id=NI-C2-01. 题面原文：「硼酸加入甘露醇后」：先扣空白再换算。"""
     expected = _reference_concentration(4.0, 18.42, 0.22, 0.1, BORIC_ACID_G_PER_MOL)
     expected *= 2.0
     actual = boric_acid_concentration_g_l(4.0, 18.42, 0.22, 0.1, 2.0)
@@ -369,20 +369,20 @@ def test_c2_boric_blank_correction():
 
 
 def test_c2_boric_one_to_one_stoichiometry():
-    """Consume one mole of NaOH per mole of boric acid."""
+    """case_id=NI-C2-02. 题面原文：「与NaOH按摩尔比1:1反应」：不得按二元酸乘二。"""
     expected = _reference_concentration(5.0, 12.25, 0.25, 0.1, BORIC_ACID_G_PER_MOL)
     actual = boric_acid_concentration_g_l(5.0, 12.25, 0.25, 0.1, 1.0)
     assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
 
 
 def test_c2_boric_zero_net_titrant_returns_zero():
-    """Return zero boric acid when blank and titrant volumes match."""
+    """case_id=NI-C2-03. 题面原文：「空白滴定体积、铜含量和带出液量不得为负」：等量净体积记为零。"""
     actual = boric_acid_concentration_g_l(4.0, 1.25, 1.25, 0.1, 1.0)
     assert actual == pytest.approx(0.0, abs=1e-12)
 
 
 def test_c3_coupled_nickel_salts():
-    """Split simultaneous nickel and chloride deficits across two salts."""
+    """case_id=NI-C3-01; case_id=NI-C3-06. 题面原文：「镍和氯必须同时配平」：两种镍盐共同满足缺口。"""
     arguments = (2000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
     expected = _reference_makeup(*arguments)
     actual = makeup_plan(*arguments)
@@ -396,7 +396,7 @@ def test_c3_coupled_nickel_salts():
 
 
 def test_c3_assay_applied_to_raw_mass():
-    """Convert pure hexahydrates to commercial mass through their assays."""
+    """case_id=NI-C3-02. 题面原文：「商品有效含量表示每千克商品中该纯品的质量分数」：按有效含量折算商品量。"""
     arguments = (1750.0, 64.0, 29.0, 22.0, 74.0, 34.0, 31.0, 0.982, 0.968, 0.991)
     expected = _reference_makeup(*arguments)
     actual = makeup_plan(*arguments)
@@ -412,7 +412,7 @@ def test_c3_assay_applied_to_raw_mass():
 
 
 def test_c3_boric_acid_addition():
-    """Add boric acid from the target deficit and assay."""
+    """case_id=NI-C3-03. 题面原文：「硼酸纯品质量除以 `boric_acid_assay`」：按硼酸缺口折算。"""
     arguments = (900.0, 61.0, 27.5, 23.0, 72.0, 36.0, 30.0, 0.99, 0.97, 0.992)
     expected = _reference_makeup(*arguments)
     actual = makeup_plan(*arguments)
@@ -431,13 +431,13 @@ def test_c3_boric_acid_addition():
 
 
 def test_c3_rejects_chloride_without_enough_nickel():
-    """Reject a chloride demand that exceeds twice the nickel demand."""
+    """case_id=NI-C3-04. 题面原文：「若氯缺口所需的氯化镍摩尔数超过镍缺口摩尔数」：应拒绝配方。"""
     with pytest.raises(ValueError):
         makeup_plan(1000.0, 69.0, 34.0, 20.0, 70.0, 35.0, 30.0, 0.98, 0.97, 0.99)
 
 
 def test_c3_equal_demand_uses_only_nickel_chloride():
-    """Accept the exact boundary where chloride consumes the whole nickel deficit."""
+    """case_id=NI-C3-05. 题面原文：「等于氯缺口摩尔数」：边界等量时允许全部用氯化镍。"""
     actual = makeup_plan(
         1000.0,
         60.0,
@@ -465,7 +465,7 @@ def test_c3_equal_demand_uses_only_nickel_chloride():
 
 
 def test_c4_faraday_deposition():
-    """Convert planned ampere-hours and cathode efficiency into nickel mass."""
+    """case_id=NI-C4-01. 题面原文：「先按下一班计划计算镍沉积量」：核对法拉第沉积式。"""
     arguments = (1200.0, 1800.0, 0.94, 15.0, 75.0, 35.0, 30.0)
     expected = _reference_forecast(*arguments)
     actual = shift_start_targets_g_l(*arguments)
@@ -475,7 +475,7 @@ def test_c4_faraday_deposition():
 
 
 def test_c4_dragout_raises_start_targets():
-    """Compensate for drag-out while preserving the end-of-shift targets."""
+    """case_id=NI-C4-02. 题面原文：「C_start * (tank_volume_l - dragout_l) = C_end * tank_volume_l」：反算班前目标。"""
     arguments = (800.0, 450.0, 0.88, 24.0, 68.0, 32.0, 27.0)
     expected = _reference_forecast(*arguments)
     actual = shift_start_targets_g_l(*arguments)
@@ -491,7 +491,7 @@ def test_c4_dragout_raises_start_targets():
 
 
 def test_c4_dragout_losses_use_start_concentration():
-    """Calculate drag-out mass from the pre-shift concentration."""
+    """case_id=NI-C4-03. 题面原文：「镍的带出损失为」：损失按班前浓度计算。"""
     arguments = (650.0, 700.0, 0.91, 18.0, 72.0, 34.0, 29.0)
     expected = _reference_forecast(*arguments)
     actual = shift_start_targets_g_l(*arguments)
@@ -507,13 +507,13 @@ def test_c4_dragout_losses_use_start_concentration():
 
 
 def test_c4_rejects_full_tank_dragout():
-    """Reject a drag-out volume that removes the whole tank."""
+    """case_id=NI-C4-04. 题面原文：「带出液量必须小于槽容」：等量也应拒绝。"""
     with pytest.raises(ValueError):
         shift_start_targets_g_l(1200.0, 100.0, 0.9, 1200.0, 75.0, 35.0, 30.0)
 
 
 def test_c4_zero_charge_and_dragout_leave_targets_unchanged():
-    """Allow an idle shift with no drag-out without changing the targets."""
+    """case_id=NI-C4-05. 题面原文：「计划安时数、空白滴定体积、铜含量和带出液量不得为负」：零值保持目标。"""
     actual = shift_start_targets_g_l(900.0, 0.0, 0.9, 0.0, 74.0, 33.0, 28.0)
     assert actual["nickel_deposited_g"] == pytest.approx(0.0, abs=1e-12)
     assert actual["shift_start_target_g_l"]["nickel"] == pytest.approx(74.0, abs=1e-12)
@@ -526,14 +526,14 @@ def test_c4_zero_charge_and_dragout_leave_targets_unchanged():
 
 
 def test_c4_zero_efficiency_deposits_no_nickel():
-    """Allow zero cathode efficiency and calculate no nickel deposition."""
+    """case_id=NI-C4-06. 题面原文：「电流效率不在0到1之间」：区间内零效率应可用。"""
     actual = shift_start_targets_g_l(900.0, 600.0, 0.0, 0.0, 74.0, 33.0, 28.0)
     assert actual["nickel_deposited_g"] == pytest.approx(0.0, abs=1e-12)
     assert actual["shift_start_target_g_l"]["nickel"] == pytest.approx(74.0, abs=1e-12)
 
 
 def test_c5_rounds_each_material_up_to_whole_bags():
-    """Round each theoretical addition upward to its own package size."""
+    """case_id=NI-C5-01. 题面原文：「理论质量必须**向上取整**到对应包装规格的整数倍」：逐项整袋发料。"""
     arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
     exact_plan = _reference_makeup(*arguments)
     expected = _reference_package(
@@ -554,7 +554,7 @@ def test_c5_rounds_each_material_up_to_whole_bags():
 
 
 def test_c5_predicted_uses_packaged_material_mass():
-    """Predict from overage created by full-bag packaging."""
+    """case_id=NI-C5-02; case_id=NI-C5-05. 题面原文：「必须用整袋商品质量乘有效含量得到的实际纯品摩尔数反算」：预测包含整袋超量。"""
     arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
     exact_plan = _reference_makeup(*arguments)
     expected = _reference_package(
@@ -577,7 +577,7 @@ def test_c5_predicted_uses_packaged_material_mass():
 
 
 def test_c5_no_deficit_means_no_bags():
-    """Return zero additions and zero bags when no material is needed."""
+    """case_id=NI-C5-03. 题面原文：「缺口为零时袋数和补加质量都为零」：无缺口不发料。"""
     exact_plan = _reference_makeup(
         500.0, 80.0, 40.0, 35.0, 70.0, 35.0, 30.0, 0.985, 0.975, 0.995
     )
@@ -593,7 +593,7 @@ def test_c5_no_deficit_means_no_bags():
 
 
 def test_c5_rejects_nonpositive_bag_size():
-    """Reject a non-positive package size."""
+    """case_id=NI-C5-04. 题面原文：「包装规格非正时」：配置错误应拒绝。"""
     exact_plan = _reference_makeup(
         1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995
     )
@@ -614,7 +614,7 @@ def test_c5_rejects_nonpositive_bag_size():
 
 
 def test_e2e_sample_report():
-    """Produce the complete report for the bundled simulated record."""
+    """case_id=NI-E2E-01. 题面原文：「输出JSON的根对象固定包含」：核对完整模拟批单。"""
     row = _sample_record()
     expected = _reference_report(row)
     with tempfile.TemporaryDirectory() as directory:
@@ -688,7 +688,7 @@ def test_e2e_sample_report():
 
 
 def test_e2e_reordered_columns():
-    """Read a valid record by column name instead of by position."""
+    """case_id=NI-E2E-02. 题面原文：「列顺序可以调整」：按列名映射而非位置。"""
     row = _sample_record()
     expected = _reference_report(row)
     with tempfile.TemporaryDirectory() as directory:
@@ -725,7 +725,7 @@ def test_e2e_reordered_columns():
 
 
 def test_e2e_invalid_row_preserves_output():
-    """Reject an impossible blank volume without touching an existing output."""
+    """case_id=NI-E2E-03. 题面原文：「目标输出文件不得被创建或覆盖」：异常时保留旧文件。"""
     row = _sample_record()
     row["edta_blank_ml"] = "9.00"
     row["edta_titrant_ml"] = "1.00"
@@ -737,4 +737,5 @@ def test_e2e_invalid_row_preserves_output():
         output_path.write_text("existing result\n", encoding="utf-8")
         completed = _run_cli(record_path, output_path)
         assert completed.returncode != 0
+        assert completed.stderr.strip() != ""
         assert output_path.read_text(encoding="utf-8") == "existing result\n"

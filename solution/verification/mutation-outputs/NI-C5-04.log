@@ -1,0 +1,15 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c5_rejects_nonpositive_bag_size'
+NI-C5-04 FAILED test_c5_rejects_nonpositive_bag_size
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 601, in test_c5_rejects_nonpositive_bag_size
+    package_plan(
+  File "/workspace/bath_audit/packaging.py", line 83, in package_plan
+    key: _whole_bags(float(required[key]), bag_sizes[key])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/bath_audit/packaging.py", line 17, in _whole_bags
+    ratio = required_kg / bag_kg
+            ~~~~~~~~~~~~^~~~~~~~
+ZeroDivisionError: float division by zero
+
+NI-C5-04 FAILED (pytest exit=1)

@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_e2e_invalid_row_preserves_output'
+NI-E2E-03 FAILED test_e2e_invalid_row_preserves_output
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 739, in test_e2e_invalid_row_preserves_output
+    assert completed.returncode != 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-E2E-03 FAILED (pytest exit=1)

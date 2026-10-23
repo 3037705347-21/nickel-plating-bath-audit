@@ -1,0 +1,11 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c1_invalid_sample_volume_rejected'
+NI-C1-04 FAILED test_c1_invalid_sample_volume_rejected
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 345, in test_c1_invalid_sample_volume_rejected
+    nickel_concentration_g_l(0.0, 14.0, 0.5, 0.1, 1.0, 0.0)
+  File "/workspace/bath_audit/nickel.py", line 38, in nickel_concentration_g_l
+    net_ml / 1000.0
+ZeroDivisionError: float division by zero
+
+NI-C1-04 FAILED (pytest exit=1)

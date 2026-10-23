@@ -1,0 +1,10 @@
+$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c3_boric_acid_addition'
+NI-C3-03 FAILED test_c3_boric_acid_addition
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/tests/test_outputs.py", line 419, in test_c3_boric_acid_addition
+    assert actual["addition_kg"]["boric_acid"] == pytest.approx(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+NI-C3-03 FAILED (pytest exit=1)
