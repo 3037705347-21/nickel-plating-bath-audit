@@ -402,7 +402,7 @@ def main() -> int:
             output_path.write_text(
                 f"$ docker exec {container} python -c "
                 f"'direct test function {item['test_name']}'\n"
-                f"{combined}\n{item['case_id']} FAILED (pytest exit={result.returncode})\n",
+                f"{combined}\n{item['case_id']} FAILED (direct-test exit={result.returncode})\n",
                 encoding="utf-8",
             )
             old_lines = original.splitlines(keepends=True)

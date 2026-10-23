@@ -1,4 +1,4 @@
-$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c5_no_deficit_means_no_bags'
+$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c5_no_deficit_means_no_bags'
 NI-C5-03 FAILED test_c5_no_deficit_means_no_bags
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
@@ -7,4 +7,4 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^^
 AssertionError
 
-NI-C5-03 FAILED (pytest exit=1)
+NI-C5-03 FAILED (direct-test exit=1)

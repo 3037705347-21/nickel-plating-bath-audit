@@ -1,4 +1,4 @@
-$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c3_equal_demand_uses_only_nickel_chloride'
+$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c3_equal_demand_uses_only_nickel_chloride'
 NI-C3-05 FAILED test_c3_equal_demand_uses_only_nickel_chloride
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
@@ -9,4 +9,4 @@ Traceback (most recent call last):
     raise ValueError(
 ValueError: chloride demand exceeds the chloride supplied by the available nickel deficit
 
-NI-C3-05 FAILED (pytest exit=1)
+NI-C3-05 FAILED (direct-test exit=1)

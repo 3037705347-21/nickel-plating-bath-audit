@@ -1,4 +1,4 @@
-$ docker exec 3ee633836397cdcced44395b4bd5076599ea0a927c8be64034d6eb2594f33cb6 python -c 'direct test function test_c4_zero_charge_and_dragout_leave_targets_unchanged'
+$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c4_zero_charge_and_dragout_leave_targets_unchanged'
 NI-C4-05 FAILED test_c4_zero_charge_and_dragout_leave_targets_unchanged
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
@@ -9,4 +9,4 @@ Traceback (most recent call last):
     raise ValueError("planned charge must not be negative")
 ValueError: planned charge must not be negative
 
-NI-C4-05 FAILED (pytest exit=1)
+NI-C4-05 FAILED (direct-test exit=1)
