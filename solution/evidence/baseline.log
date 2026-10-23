@@ -1,6 +1,5 @@
-$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-baseline.pkAWxl:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-baseline.WWKjWC:/logs harbor-nickel-bath-quality:27734 bash /tests/test.sh
+$ docker run --rm -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-baseline.z3QlZI:/workspace -v /Users/zhangchengcheng/harbor/nickel-plating-bath-audit/tests:/tests:ro -v /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T//nickel-bath-logs-baseline.KZ0eGW:/logs harbor-nickel-bath-quality:82296 bash /tests/test.sh
 Collecting iniconfig==2.3.1 (from -r /tests/requirements.txt (line 2))
-  WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)'))': /packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl
   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
 Collecting packaging==26.3 (from -r /tests/requirements.txt (line 3))
   Downloading packaging-26.3-py3-none-any.whl (129 kB)
@@ -8,7 +7,7 @@ Collecting pluggy==1.7.0 (from -r /tests/requirements.txt (line 4))
   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
 Collecting pygments==2.21.0 (from -r /tests/requirements.txt (line 5))
   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 106.1 kB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 160.6 kB/s eta 0:00:00
 Collecting pytest==8.4.1 (from -r /tests/requirements.txt (line 6))
   Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
 Collecting pytest-json-ctrf==0.3.5 (from -r /tests/requirements.txt (line 7))
@@ -19,12 +18,12 @@ Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest, p
   WARNING: The scripts py.test and pytest are installed in '/home/worker/.local/bin' which is not on PATH.
   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
 Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-8.4.1 pytest-json-ctrf-0.3.5
-FFFFF.FF.FFFFFFFFF..FF.FFFF                                              [100%]
+FFFFF.FF.FFFFFFFFF..FF.FFFFF                                             [100%]
 =================================== FAILURES ===================================
 ________________________ test_c1_edta_blank_correction _________________________
 
     def test_c1_edta_blank_correction():
-        """Subtract the EDTA blank before converting nickel moles."""
+        """case_id=NI-C1-01. 题面原文：「三种滴定的净体积都是」：EDTA净体积先行扣空白。"""
         expected = _reference_nickel(3.0, 14.25, 0.75, 0.05, 2.0, 0.10)
         actual = nickel_concentration_g_l(3.0, 14.25, 0.75, 0.05, 2.0, 0.10)
 >       assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
@@ -34,11 +33,11 @@ E         comparison failed
 E         Obtained: 27.787001357913947
 E         Expected: 26.31966635791395 ± 2.6e-11
 
-/tests/test_outputs.py:326: AssertionError
+/tests/test_outputs.py:327: AssertionError
 _________________ test_c1_nickel_stoichiometry_and_molar_mass __________________
 
     def test_c1_nickel_stoichiometry_and_molar_mass():
-        """Use the specified nickel molar mass and 1:1 EDTA stoichiometry."""
+        """case_id=NI-C1-02. 题面原文：「镍与EDTA按摩尔比1:1反应」：使用指定摩尔质量。"""
         expected = _reference_nickel(2.0, 21.45, 0.32, 0.1, 1.5, 0.08)
         actual = nickel_concentration_g_l(2.0, 21.45, 0.32, 0.1, 1.5, 0.08)
 >       assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
@@ -48,11 +47,11 @@ E         comparison failed
 E         Obtained: 94.34911633633116
 E         Expected: 92.94047473633114 ± 9.3e-11
 
-/tests/test_outputs.py:333: AssertionError
+/tests/test_outputs.py:334: AssertionError
 ____________________ test_c1_zero_net_titrant_returns_zero _____________________
 
     def test_c1_zero_net_titrant_returns_zero():
-        """Return zero nickel when the blank consumes the entire titration."""
+        """case_id=NI-C1-03. 题面原文：「空白不得大于对应滴定体积」：等量时净体积为零。"""
         actual = nickel_concentration_g_l(2.0, 0.67, 0.67, 0.1, 1.0, 0.0)
 >       assert actual == pytest.approx(0.0, abs=1e-12)
 E       assert 1.9662288999999997 == 0.0 ± 1.0e-12
@@ -61,15 +60,15 @@ E         comparison failed
 E         Obtained: 1.9662288999999997
 E         Expected: 0.0 ± 1.0e-12
 
-/tests/test_outputs.py:339: AssertionError
+/tests/test_outputs.py:340: AssertionError
 ____________________ test_c1_invalid_sample_volume_rejected ____________________
 
     def test_c1_invalid_sample_volume_rejected():
-        """Reject a non-positive nickel sample volume."""
+        """case_id=NI-C1-04. 题面原文：「槽容、取样体积、稀释倍数」都必须大于零：零体积应被拒绝。"""
         with pytest.raises(ValueError):
 >           nickel_concentration_g_l(0.0, 14.0, 0.5, 0.1, 1.0, 0.0)
 
-/tests/test_outputs.py:345: 
+/tests/test_outputs.py:346: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 sample_ml = 0.0, titrant_ml = 14.0, blank_ml = 0.5, molarity = 0.1
@@ -99,7 +98,7 @@ bath_audit/nickel.py:24: ZeroDivisionError
 ____________________ test_c1_copper_interference_subtracted ____________________
 
     def test_c1_copper_interference_subtracted():
-        """Subtract the copper equivalent reported by EDTA before use."""
+        """case_id=NI-C1-05. 题面原文：「真正的镍浓度要从表观镍中减去」：扣除铜当量。"""
         apparent = _reference_concentration(2.0, 21.45, 0.32, 0.1, NICKEL_G_PER_MOL)
         expected = apparent - 0.25 * NICKEL_G_PER_MOL / COPPER_G_PER_MOL
         actual = nickel_concentration_g_l(2.0, 21.45, 0.32, 0.1, 1.0, 0.25)
@@ -110,11 +109,11 @@ E         comparison failed
 E         Obtained: 62.71776239478488
 E         Expected: 61.77866799478487 ± 6.2e-11
 
-/tests/test_outputs.py:353: AssertionError
+/tests/test_outputs.py:354: AssertionError
 ________________________ test_c2_boric_blank_correction ________________________
 
     def test_c2_boric_blank_correction():
-        """Subtract the boric-acid blank before applying its stoichiometry."""
+        """case_id=NI-C2-01. 题面原文：「硼酸加入甘露醇后」：先扣空白再换算。"""
         expected = _reference_concentration(4.0, 18.42, 0.22, 0.1, BORIC_ACID_G_PER_MOL)
         expected *= 2.0
         actual = boric_acid_concentration_g_l(4.0, 18.42, 0.22, 0.1, 2.0)
@@ -125,11 +124,11 @@ E         comparison failed
 E         Obtained: 112.53424000000003
 E         Expected: 56.26712000000001 ± 5.6e-11
 
-/tests/test_outputs.py:368: AssertionError
+/tests/test_outputs.py:369: AssertionError
 ____________________ test_c2_boric_one_to_one_stoichiometry ____________________
 
     def test_c2_boric_one_to_one_stoichiometry():
-        """Consume one mole of NaOH per mole of boric acid."""
+        """case_id=NI-C2-02. 题面原文：「与NaOH按摩尔比1:1反应」：不得按二元酸乘二。"""
         expected = _reference_concentration(5.0, 12.25, 0.25, 0.1, BORIC_ACID_G_PER_MOL)
         actual = boric_acid_concentration_g_l(5.0, 12.25, 0.25, 0.1, 1.0)
 >       assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
@@ -139,22 +138,22 @@ E         comparison failed
 E         Obtained: 29.679360000000003
 E         Expected: 14.839680000000001 ± 1.5e-11
 
-/tests/test_outputs.py:375: AssertionError
+/tests/test_outputs.py:376: AssertionError
 _________________________ test_c3_coupled_nickel_salts _________________________
 
     def test_c3_coupled_nickel_salts():
-        """Split simultaneous nickel and chloride deficits across two salts."""
+        """case_id=NI-C3-01; case_id=NI-C3-06. 题面原文：「镍和氯必须同时配平」：两种镍盐共同满足缺口。"""
         arguments = (2000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
         expected = _reference_makeup(*arguments)
         actual = makeup_plan(*arguments)
 >       assert actual["addition_kg"]["nickel_chloride_hexahydrate"] > 0.0
 E       assert 0.0 > 0.0
 
-/tests/test_outputs.py:389: AssertionError
+/tests/test_outputs.py:390: AssertionError
 ______________________ test_c3_assay_applied_to_raw_mass _______________________
 
     def test_c3_assay_applied_to_raw_mass():
-        """Convert pure hexahydrates to commercial mass through their assays."""
+        """case_id=NI-C3-02. 题面原文：「商品有效含量表示每千克商品中该纯品的质量分数」：按有效含量折算商品量。"""
         arguments = (1750.0, 64.0, 29.0, 22.0, 74.0, 34.0, 31.0, 0.982, 0.968, 0.991)
         expected = _reference_makeup(*arguments)
         actual = makeup_plan(*arguments)
@@ -167,11 +166,11 @@ E         comparison failed
 E         Obtained: 79.80659785026536
 E         Expected: 20.35170668113598 ± 2.0e-11
 
-/tests/test_outputs.py:403: AssertionError
+/tests/test_outputs.py:404: AssertionError
 _________________________ test_c3_boric_acid_addition __________________________
 
     def test_c3_boric_acid_addition():
-        """Add boric acid from the target deficit and assay."""
+        """case_id=NI-C3-03. 题面原文：「硼酸纯品质量除以 `boric_acid_assay`」：按硼酸缺口折算。"""
         arguments = (900.0, 61.0, 27.5, 23.0, 72.0, 36.0, 30.0, 0.99, 0.97, 0.992)
         expected = _reference_makeup(*arguments)
         actual = makeup_plan(*arguments)
@@ -184,20 +183,20 @@ E         comparison failed
 E         Obtained: 7.65
 E         Expected: 7.711693548387097 ± 7.7e-12
 
-/tests/test_outputs.py:419: AssertionError
+/tests/test_outputs.py:420: AssertionError
 ________________ test_c3_rejects_chloride_without_enough_nickel ________________
 
     def test_c3_rejects_chloride_without_enough_nickel():
-        """Reject a chloride demand that exceeds twice the nickel demand."""
+        """case_id=NI-C3-04. 题面原文：「若氯缺口所需的氯化镍摩尔数超过镍缺口摩尔数」：应拒绝配方。"""
 >       with pytest.raises(ValueError):
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:435: Failed
+/tests/test_outputs.py:436: Failed
 ________________ test_c3_equal_demand_uses_only_nickel_chloride ________________
 
     def test_c3_equal_demand_uses_only_nickel_chloride():
-        """Accept the exact boundary where chloride consumes the whole nickel deficit."""
+        """case_id=NI-C3-05. 题面原文：「等于氯缺口摩尔数」：边界等量时允许全部用氯化镍。"""
         actual = makeup_plan(
             1000.0,
             60.0,
@@ -219,11 +218,11 @@ E         comparison failed
 E         Obtained: 26.28460799999997
 E         Expected: 0.0 ± 1.0e-12
 
-/tests/test_outputs.py:453: AssertionError
+/tests/test_outputs.py:454: AssertionError
 __________________________ test_c4_faraday_deposition __________________________
 
     def test_c4_faraday_deposition():
-        """Convert planned ampere-hours and cathode efficiency into nickel mass."""
+        """case_id=NI-C4-01. 题面原文：「先按下一班计划计算镍沉积量」：核对法拉第沉积式。"""
         arguments = (1200.0, 1800.0, 0.94, 15.0, 75.0, 35.0, 30.0)
         expected = _reference_forecast(*arguments)
         actual = shift_start_targets_g_l(*arguments)
@@ -236,11 +235,11 @@ E         comparison failed
 E         Obtained: 0.0
 E         Expected: 1852.681802635847 ± 1.9e-09
 
-/tests/test_outputs.py:472: AssertionError
+/tests/test_outputs.py:473: AssertionError
 _____________________ test_c4_dragout_raises_start_targets _____________________
 
     def test_c4_dragout_raises_start_targets():
-        """Compensate for drag-out while preserving the end-of-shift targets."""
+        """case_id=NI-C4-02. 题面原文：「C_start * (tank_volume_l - dragout_l) = C_end * tank_volume_l」：反算班前目标。"""
         arguments = (800.0, 450.0, 0.88, 24.0, 68.0, 32.0, 27.0)
         expected = _reference_forecast(*arguments)
         actual = shift_start_targets_g_l(*arguments)
@@ -253,11 +252,11 @@ E         comparison failed
 E         Obtained: 68.0
 E         Expected: 70.66186389090245 ± 7.1e-11
 
-/tests/test_outputs.py:482: AssertionError
+/tests/test_outputs.py:483: AssertionError
 ________________ test_c4_dragout_losses_use_start_concentration ________________
 
     def test_c4_dragout_losses_use_start_concentration():
-        """Calculate drag-out mass from the pre-shift concentration."""
+        """case_id=NI-C4-03. 题面原文：「镍的带出损失为」：损失按班前浓度计算。"""
         arguments = (650.0, 700.0, 0.91, 18.0, 72.0, 34.0, 29.0)
         expected = _reference_forecast(*arguments)
         actual = shift_start_targets_g_l(*arguments)
@@ -270,20 +269,20 @@ E         comparison failed
 E         Obtained: 0.0
 E         Expected: 1352.7767019303635 ± 1.4e-09
 
-/tests/test_outputs.py:498: AssertionError
+/tests/test_outputs.py:499: AssertionError
 ______________________ test_c4_rejects_full_tank_dragout _______________________
 
     def test_c4_rejects_full_tank_dragout():
-        """Reject a drag-out volume that removes the whole tank."""
+        """case_id=NI-C4-04. 题面原文：「带出液量必须小于槽容」：等量也应拒绝。"""
 >       with pytest.raises(ValueError):
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:511: Failed
+/tests/test_outputs.py:512: Failed
 ________________ test_c5_rounds_each_material_up_to_whole_bags _________________
 
     def test_c5_rounds_each_material_up_to_whole_bags():
-        """Round each theoretical addition upward to its own package size."""
+        """case_id=NI-C5-01. 题面原文：「理论质量必须**向上取整**到对应包装规格的整数倍」：逐项整袋发料。"""
         arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
         exact_plan = _reference_makeup(*arguments)
         expected = _reference_package(
@@ -296,16 +295,16 @@ ________________ test_c5_rounds_each_material_up_to_whole_bags _________________
 E       AssertionError: assert {'boric_acid'...xahydrate': 0} == {'boric_acid'...xahydrate': 1}
 E         
 E         Differing items:
+E         {'boric_acid': 0} != {'boric_acid': 2}
 E         {'nickel_sulfate_hexahydrate': 0} != {'nickel_sulfate_hexahydrate': 1}
 E         {'nickel_chloride_hexahydrate': 0} != {'nickel_chloride_hexahydrate': 5}
-E         {'boric_acid': 0} != {'boric_acid': 2}
 E         Use -v to get more diff
 
-/tests/test_outputs.py:545: AssertionError
+/tests/test_outputs.py:546: AssertionError
 ________________ test_c5_predicted_uses_packaged_material_mass _________________
 
     def test_c5_predicted_uses_packaged_material_mass():
-        """Predict from overage created by full-bag packaging."""
+        """case_id=NI-C5-02; case_id=NI-C5-05. 题面原文：「必须用整袋商品质量乘有效含量得到的实际纯品摩尔数反算」：预测包含整袋超量。"""
         arguments = (1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995)
         exact_plan = _reference_makeup(*arguments)
         expected = _reference_package(
@@ -323,11 +322,11 @@ E         comparison failed
 E         Obtained: 70.0
 E         Expected: 77.53665791702389 ± 7.8e-11
 
-/tests/test_outputs.py:566: AssertionError
+/tests/test_outputs.py:567: AssertionError
 _____________________ test_c5_rejects_nonpositive_bag_size _____________________
 
     def test_c5_rejects_nonpositive_bag_size():
-        """Reject a non-positive package size."""
+        """case_id=NI-C5-04. 题面原文：「包装规格非正时」：配置错误应拒绝。"""
         exact_plan = _reference_makeup(
             1000.0, 60.0, 30.0, 20.0, 70.0, 35.0, 32.0, 0.985, 0.975, 0.995
         )
@@ -335,11 +334,33 @@ _____________________ test_c5_rejects_nonpositive_bag_size _____________________
              ^^^^^^^^^^^^^^^^^^^^^^^^^
 E       Failed: DID NOT RAISE <class 'ValueError'>
 
-/tests/test_outputs.py:600: Failed
+/tests/test_outputs.py:601: Failed
+_______________________ test_e2e_state_transition_matrix _______________________
+
+    def test_e2e_state_transition_matrix():
+        """case_id=NI-F7-01; case_id=NI-F7-02. 题面原文：「同一条事件重复上报只能计算一次」：拒收、放行、再次拒收按最后状态计净数。"""
+        assert audit()["transitions"] == {}
+        events = [
+            {"event_id": "evt-01", "batch_id": "B-2026-01", "status": "rejected"},
+            {"event_id": "evt-02", "batch_id": "B-2026-01", "status": "released"},
+            {"event_id": "evt-03", "batch_id": "B-2026-01", "status": "rejected"},
+            {"event_id": "evt-02", "batch_id": "B-2026-01", "status": "released"},
+        ]
+>       assert audit(events)["transitions"]["B-2026-01"] == [
+            "rejected",
+            "released",
+            "rejected"
+        ]
+E       AssertionError: assert ['rejected', ...', 'released'] == ['rejected', ...', 'rejected']
+E         
+E         Left contains one more item: 'released'
+E         Use -v to get more diff
+
+/tests/test_outputs.py:626: AssertionError
 ____________________________ test_e2e_sample_report ____________________________
 
     def test_e2e_sample_report():
-        """Produce the complete report for the bundled simulated record."""
+        """case_id=NI-E2E-01. 题面原文：「输出JSON的根对象固定包含」：核对完整模拟批单。"""
         row = _sample_record()
         expected = _reference_report(row)
         with tempfile.TemporaryDirectory() as directory:
@@ -358,11 +379,11 @@ E         comparison failed
 E         Obtained: 62.83783512949674
 E         Expected: 61.89874072949673 ± 6.2e-11
 
-/tests/test_outputs.py:627: AssertionError
+/tests/test_outputs.py:648: AssertionError
 __________________________ test_e2e_reordered_columns __________________________
 
     def test_e2e_reordered_columns():
-        """Read a valid record by column name instead of by position."""
+        """case_id=NI-E2E-02. 题面原文：「列顺序可以调整」：按列名映射而非位置。"""
         row = _sample_record()
         expected = _reference_report(row)
         with tempfile.TemporaryDirectory() as directory:
@@ -376,13 +397,13 @@ __________________________ test_e2e_reordered_columns __________________________
 E           AssertionError: error: unexpected columns
 E             
 E           assert 1 == 0
-E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmppo4j99vx/reordered.csv', '/tmp/tmppo4j99vx/batch.json'], returncode=1, stdout='', stderr='error: unexpected columns\n').returncode
+E            +  where 1 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmped34_8gq/reordered.csv', '/tmp/tmped34_8gq/batch.json'], returncode=1, stdout='', stderr='error: unexpected columns\n').returncode
 
-/tests/test_outputs.py:701: AssertionError
+/tests/test_outputs.py:722: AssertionError
 ____________________ test_e2e_invalid_row_preserves_output _____________________
 
     def test_e2e_invalid_row_preserves_output():
-        """Reject an impossible blank volume without touching an existing output."""
+        """case_id=NI-E2E-03. 题面原文：「目标输出文件不得被创建或覆盖」：异常时保留旧文件。"""
         row = _sample_record()
         row["edta_blank_ml"] = "9.00"
         row["edta_titrant_ml"] = "1.00"
@@ -395,16 +416,16 @@ ____________________ test_e2e_invalid_row_preserves_output _____________________
             completed = _run_cli(record_path, output_path)
 >           assert completed.returncode != 0
 E           AssertionError: assert 0 != 0
-E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmprf2u62bo/invalid.csv', '/tmp/tmprf2u62bo/batch.json'], returncode=0, stdout='', stderr='').returncode
+E            +  where 0 = CompletedProcess(args=['/usr/local/bin/python', '-m', 'bath_audit.cli', '/tmp/tmplsogvwhv/invalid.csv', '/tmp/tmplsogvwhv/batch.json'], returncode=0, stdout='', stderr='').returncode
 
-/tests/test_outputs.py:739: AssertionError
+/tests/test_outputs.py:760: AssertionError
 =============================== warnings summary ===============================
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-i3mhqidq'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tests/pytest-cache-files-twq3nhub'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
 ../home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429
-  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-5933zb6r'
+  /home/worker/.local/lib/python3.12/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tests/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tests/pytest-cache-files-ao819x0n'
     config.cache.set("cache/lastfailed", self.lastfailed)
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
@@ -428,9 +449,10 @@ FAILED ../tests/test_outputs.py::test_c4_rejects_full_tank_dragout - Failed: ...
 FAILED ../tests/test_outputs.py::test_c5_rounds_each_material_up_to_whole_bags
 FAILED ../tests/test_outputs.py::test_c5_predicted_uses_packaged_material_mass
 FAILED ../tests/test_outputs.py::test_c5_rejects_nonpositive_bag_size - Faile...
+FAILED ../tests/test_outputs.py::test_e2e_state_transition_matrix - Assertion...
 FAILED ../tests/test_outputs.py::test_e2e_sample_report - assert 62.837835129...
 FAILED ../tests/test_outputs.py::test_e2e_reordered_columns - AssertionError:...
 FAILED ../tests/test_outputs.py::test_e2e_invalid_row_preserves_output - Asse...
-22 failed, 5 passed, 2 warnings in 0.49s
+23 failed, 5 passed, 2 warnings in 0.55s
 reward=0.000000
-summary=tests=27 passed=5 failed=22
+summary=tests=28 passed=5 failed=23

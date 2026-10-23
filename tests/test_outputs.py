@@ -20,6 +20,7 @@ from bath_audit.forecast import shift_start_targets_g_l
 from bath_audit.makeup import makeup_plan
 from bath_audit.nickel import nickel_concentration_g_l
 from bath_audit.packaging import package_plan
+from bath_audit.release_state import audit, surface
 
 
 DATA = Path("/workspace/data")
@@ -611,6 +612,26 @@ def test_c5_rejects_nonpositive_bag_size():
             10.0,
             5.0,
         )
+
+
+def test_e2e_state_transition_matrix():
+    """case_id=NI-F7-01; case_id=NI-F7-02. 题面原文：「同一条事件重复上报只能计算一次」：拒收、放行、再次拒收按最后状态计净数。"""
+    assert audit()["transitions"] == {}
+    events = [
+        {"event_id": "evt-01", "batch_id": "B-2026-01", "status": "rejected"},
+        {"event_id": "evt-02", "batch_id": "B-2026-01", "status": "released"},
+        {"event_id": "evt-03", "batch_id": "B-2026-01", "status": "rejected"},
+        {"event_id": "evt-02", "batch_id": "B-2026-01", "status": "released"},
+    ]
+    assert audit(events)["transitions"]["B-2026-01"] == [
+        "rejected",
+        "released",
+        "rejected"
+    ]
+    summary = surface(events)
+    assert summary["counts"] == {"released": 0, "rejected": 1}
+    assert summary["event_count"] == 3
+    assert surface()["counts"] == {"released": 0, "rejected": 0}
 
 
 def test_e2e_sample_report():

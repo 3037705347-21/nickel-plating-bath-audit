@@ -123,3 +123,5 @@ bath_audit.packaging.package_plan(
 三个浓度函数返回槽液g/L；`shift_start_targets_g_l` 返回与 `forecast` 相同结构的对象；`makeup_plan` 返回理论精确配方，包含 `addition_kg`、`total_addition_kg` 和 `predicted_g_l`；`package_plan` 接收该配方并返回包含 `addition_kg`、`bags`、`total_addition_kg` 和 `predicted_g_l` 的整袋方案。浓度函数遇到非正样品体积、非正稀释倍数、负铜含量、负空白、空白大于滴定体积或非正摩尔浓度时应抛出 `ValueError`。带出液量不小于槽容、计划安时数为负或电流效率不在0到1之间时，也应抛出 `ValueError`。包装规格非正时，`package_plan` 应抛出 `ValueError`。
 
 输入校验或配方约束失败时，命令以非零状态退出，并把原因写到标准错误；目标输出文件不得被创建或覆盖。成功时生成JSON后以0退出。`/workspace/data/lab_record.csv` 是一份按固定规则生成的模拟记录，用于核对接口和输出结构，不是原始化验台账。
+
+交接流水还要保留同一批号的放行与拒收状态。每个事件有唯一 `event_id`，同一条事件重复上报只能计算一次；汇总时按该批号最后一条状态计入 `released` 或 `rejected` 净数。这样一批记录被拒收、补充材料后放行、再次抽检拒收时，流水和汇总仍能保持一致。

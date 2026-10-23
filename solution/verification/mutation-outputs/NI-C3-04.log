@@ -1,8 +1,8 @@
-$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c3_rejects_chloride_without_enough_nickel'
+$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_c3_rejects_chloride_without_enough_nickel'
 NI-C3-04 FAILED test_c3_rejects_chloride_without_enough_nickel
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 435, in test_c3_rejects_chloride_without_enough_nickel
+  File "/tests/test_outputs.py", line 436, in test_c3_rejects_chloride_without_enough_nickel
     with pytest.raises(ValueError):
          ^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/worker/.local/lib/python3.12/site-packages/_pytest/raises.py", line 712, in __exit__

@@ -55,7 +55,7 @@ baseline_workspace="$(mktemp -d "${TMPDIR:-/tmp}/nickel-bath-baseline.XXXXXX")"
 cp -R "$task_dir/environment/workspace/." "$baseline_workspace"/
 run_case baseline "$baseline_workspace"
 
-oracle_workspace="$(prepare_workspace oracle nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py cli.py)"
+oracle_workspace="$(prepare_workspace oracle nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py release_state.py cli.py)"
 run_case oracle "$oracle_workspace"
 
 partial_c1_workspace="$(mktemp -d "${TMPDIR:-/tmp}/nickel-bath-c1.XXXXXX")"
@@ -83,15 +83,15 @@ cp -R "$task_dir/environment/workspace/." "$partial_c5_workspace"/
 cp "$task_dir/solution/packaging.py" "$partial_c5_workspace/bath_audit/packaging.py"
 run_case partial-c5 "$partial_c5_workspace"
 
-empty_workspace="$(prepare_workspace empty nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py cli.py)"
+empty_workspace="$(prepare_workspace empty nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py release_state.py cli.py)"
 cp "$task_dir/solution/bypasses/empty/cli.py" "$empty_workspace/bath_audit/cli.py"
 run_case bypass-empty "$empty_workspace"
 
-malformed_workspace="$(prepare_workspace malformed nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py cli.py)"
+malformed_workspace="$(prepare_workspace malformed nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py release_state.py cli.py)"
 cp "$task_dir/solution/bypasses/malformed/cli.py" "$malformed_workspace/bath_audit/cli.py"
 run_case bypass-malformed "$malformed_workspace"
 
-hardcoded_workspace="$(prepare_workspace hardcoded nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py cli.py)"
+hardcoded_workspace="$(prepare_workspace hardcoded nickel.py boric_acid.py chloride.py forecast.py makeup.py packaging.py release_state.py cli.py)"
 cp "$task_dir/solution/bypasses/hardcoded/cli.py" "$hardcoded_workspace/bath_audit/cli.py"
 run_case bypass-hardcoded "$hardcoded_workspace"
 

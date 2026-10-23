@@ -76,6 +76,12 @@ NI-C5-03 PASSED
 NI-C5-04 PASSED test_c5_rejects_nonpositive_bag_size
 test_outputs.py::test_c5_rejects_nonpositive_bag_size PASSED
 NI-C5-04 PASSED
+NI-F7-01 PASSED test_e2e_state_transition_matrix
+test_outputs.py::test_e2e_state_transition_matrix PASSED
+NI-F7-01 PASSED
+NI-F7-02 PASSED test_e2e_state_transition_matrix
+test_outputs.py::test_e2e_state_transition_matrix PASSED
+NI-F7-02 PASSED
 NI-E2E-01 PASSED test_e2e_sample_report
 test_outputs.py::test_e2e_sample_report PASSED
 NI-E2E-01 PASSED

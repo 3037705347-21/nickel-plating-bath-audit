@@ -1,8 +1,8 @@
-$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c1_invalid_sample_volume_rejected'
+$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_c1_invalid_sample_volume_rejected'
 NI-C1-04 FAILED test_c1_invalid_sample_volume_rejected
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 345, in test_c1_invalid_sample_volume_rejected
+  File "/tests/test_outputs.py", line 346, in test_c1_invalid_sample_volume_rejected
     nickel_concentration_g_l(0.0, 14.0, 0.5, 0.1, 1.0, 0.0)
   File "/workspace/bath_audit/nickel.py", line 38, in nickel_concentration_g_l
     net_ml / 1000.0

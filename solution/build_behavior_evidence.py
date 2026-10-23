@@ -28,6 +28,7 @@ MODULE_NAMES = (
     "makeup.py",
     "nickel.py",
     "packaging.py",
+    "release_state.py",
 )
 
 
@@ -157,6 +158,14 @@ CASES = [
     case("NI-C5-04", "test_c5_rejects_nonpositive_bag_size", "仓库不做拆袋", "json_text",
          "solution/packaging.py", "if bag_kg <= 0:", "if bag_kg < 0:",
          "boundary_shift", "允许零包装规格进入计算"),
+    case("NI-F7-01", "test_e2e_state_transition_matrix", "同一条事件重复上报只能计算一次", "filesystem",
+         "solution/release_state.py", "        if event_id in seen:\n            continue",
+         "        if False:\n            continue", "condition_negation",
+         "取消重复事件去重，破坏状态迁移流水"),
+    case("NI-F7-02", "test_e2e_state_transition_matrix", "汇总时按该批号最后一条状态计入", "filesystem",
+         "solution/release_state.py", "        counts[statuses[-1]] += 1",
+         "        counts[statuses[-1]] += 2", "constant_replacement",
+         "把最后状态净计数重复累加两次"),
     case("NI-E2E-01", "test_e2e_sample_report", "`package_plan` 接收该配方", "filesystem",
          "environment/workspace/bath_audit/audit.py",
          "\"batch_id\": row[\"batch_id\"],", "\"batch_id\": \"MUTATED\",",

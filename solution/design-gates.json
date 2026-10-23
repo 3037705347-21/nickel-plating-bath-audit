@@ -90,6 +90,15 @@
         "T27",
         "T18"
       ]
+    },
+    {
+      "id": "R6",
+      "statement": "保留同一批号的放行与拒收事件流水，重复事件只计算一次，并按最后状态汇总净计数",
+      "observable": "拒收、放行、再次拒收后的状态序列、去重后的事件数以及 released/rejected 净数",
+      "expected_basis": "按event_id去重后，每次只保留首次出现的事件，汇总取每个批号最后一条状态",
+      "test_ids": [
+        "T28"
+      ]
     }
   ],
   "tests": [
@@ -312,6 +321,14 @@
         "R5"
       ],
       "expected": "非正包装规格被拒绝"
+    },
+    {
+      "id": "T28",
+      "kind": "combination",
+      "requirement_ids": [
+        "R6"
+      ],
+      "expected": "同一批号经历拒收、放行、再次拒收，并重复上报放行事件后，状态序列和净计数正确"
     }
   ],
   "challenges": [

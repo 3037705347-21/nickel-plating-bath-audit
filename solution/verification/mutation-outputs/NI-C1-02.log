@@ -1,8 +1,8 @@
-$ docker exec 978debb30bceb7f1300d51af23b518c8f7ad0eb5c5d18ea9cc154fdafc7992e6 python -c 'direct test function test_c1_nickel_stoichiometry_and_molar_mass'
+$ docker exec 2055f64b176480c85efa1f7e993118d1019d15f517818b517f3a3e9830737385 python -c 'direct test function test_c1_nickel_stoichiometry_and_molar_mass'
 NI-C1-02 FAILED test_c1_nickel_stoichiometry_and_molar_mass
 Traceback (most recent call last):
   File "<string>", line 7, in <module>
-  File "/tests/test_outputs.py", line 333, in test_c1_nickel_stoichiometry_and_molar_mass
+  File "/tests/test_outputs.py", line 334, in test_c1_nickel_stoichiometry_and_molar_mass
     assert actual == pytest.approx(expected, rel=1e-12, abs=1e-12)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError

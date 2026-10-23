@@ -5,10 +5,10 @@
   "reviewed_tests_after_authoring": true,
   "reviewed_atomicity": true,
   "reviewed_category_mapping": true,
-  "instruction_sha256": "de71384e79f6fd1a7b90dc1f34e91c70d149e6a0b2b0423bebc5ce9b129d8390",
-  "tests_sha256": "db31b7e2e65e66a0026684b1c95d89bac8a0bc1d98cf5862234aad72b96365be",
-  "oracle_stdout_sha256": "db5242e39b0dce59e4799133782e723c47d141da9ddf6f59bbaafdf99c883cd7",
-  "oracle_cases_sha256": "38ee4a2df582c5afddc3bb1d112d9b801c2e87653fcfb3b35946fb53d528bf95",
+  "instruction_sha256": "5aa9a28adfd53856ce6d7d56b5622f989fc5226252897a16afa96ba637e4b47a",
+  "tests_sha256": "699931a02b013c9f7f70a789a11dae8fa394201cab714c23f081301098e93fe5",
+  "oracle_stdout_sha256": "153b80ae1f4d5eb96cb4084cec65855e0ebed35e95d0f24a1b8e68be641333db",
+  "oracle_cases_sha256": "343765c680452da9e1eb72b6dca4ef32a70ea7afef8017b80123d41f653ff7b0",
   "coverage_packages": {
     "json_text": {
       "applicable": true,
@@ -45,6 +45,8 @@
     "filesystem": {
       "applicable": true,
       "behavior_ids": [
+        "NI-F7-01",
+        "NI-F7-02",
         "NI-E2E-01"
       ]
     },
@@ -434,6 +436,34 @@
       "counterexample": "对应错误实现应使目标测试失败",
       "mutation": "允许零包装规格进入计算",
       "case_id": "NI-C5-04",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-F7-01",
+      "location": "instruction.md:127",
+      "source_text": "同一条事件重复上报只能计算一次",
+      "behavior": "取消重复事件去重，破坏状态迁移流水",
+      "category": "filesystem",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_e2e_state_transition_matrix",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "取消重复事件去重，破坏状态迁移流水",
+      "case_id": "NI-F7-01",
+      "kind": "fail_to_pass"
+    },
+    {
+      "id": "NI-F7-02",
+      "location": "instruction.md:127",
+      "source_text": "汇总时按该批号最后一条状态计入",
+      "behavior": "把最后状态净计数重复累加两次",
+      "category": "filesystem",
+      "fixture": "tests/test_outputs.py",
+      "test_name": "test_e2e_state_transition_matrix",
+      "assertion": "断言目标输出与独立复算结果一致",
+      "counterexample": "对应错误实现应使目标测试失败",
+      "mutation": "把最后状态净计数重复累加两次",
+      "case_id": "NI-F7-02",
       "kind": "fail_to_pass"
     },
     {
